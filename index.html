@@ -18,7 +18,7 @@ body {
 
 /* HEADER */
 .header {
-    padding: 30px 50px 10px 50px;
+    padding: 20px 50px 0px 50px;
 }
 
 .logo img {
@@ -28,49 +28,36 @@ body {
 /* CONTENIDO */
 .container {
     max-width: 1150px;
-    margin: auto;
-    padding: 0 20px 40px 20px;
+    margin: 10px auto 40px auto;  /* SUBIDO HACIA ARRIBA */
+    padding: 0 20px;
 }
 
-/* TITULO PERSONALIDAD */
+/* TITULO CON PLACA METÁLICA */
 .title-wrapper {
-    position: relative;
     text-align: center;
-    margin: 30px 0 60px 0;
-    padding: 25px 20px;
+    margin: 10px 0 50px 0;
 }
 
-.title-wrapper:before,
-.title-wrapper:after {
-    content: "";
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    border: 1px solid #d4af37;
-    opacity: 0.6;
-}
-
-.title-wrapper:before {
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%) translateY(-10px);
-    border-bottom: none;
-    border-right: none;
-}
-
-.title-wrapper:after {
-    bottom: 0;
-    right: 50%;
-    transform: translateX(50%) translateY(10px);
-    border-top: none;
-    border-left: none;
+.title-plate {
+    display: inline-block;
+    padding: 20px 50px;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #1a1f2b, #10141d);
+    box-shadow:
+        inset 0 1px 2px rgba(255,255,255,0.05),
+        inset 0 -2px 6px rgba(0,0,0,0.6),
+        0 8px 25px rgba(0,0,0,0.5);
+    border: 1px solid rgba(212,175,55,0.25);
 }
 
 h1 {
-    font-size: 38px;
+    font-size: 36px;
     font-weight: 500;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
     margin: 0;
+    background: linear-gradient(90deg, #ffffff, #d6d6d6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 /* SIMULADOR */
@@ -113,7 +100,7 @@ input:disabled {
     margin-bottom: 14px;
 }
 
-/* BOTÓN PREMIUM */
+/* BOTÓN */
 button {
     padding: 14px 32px;
     background: linear-gradient(135deg, #d4af37, #b9932f);
@@ -131,7 +118,7 @@ button:hover {
     box-shadow: 0 8px 25px rgba(212,175,55,0.35);
 }
 
-/* RESULTADOS DESTACADOS */
+/* RESULTADOS */
 .result-box {
     background: linear-gradient(145deg, #161b26, #1c2230);
     padding: 24px;
@@ -154,6 +141,25 @@ button:hover {
     border-radius: 12px;
     margin-top: 25px;
 }
+
+/* BLOQUE FINAL */
+.footer-block {
+    margin-top: 70px;
+    text-align: center;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.footer-block h2 {
+    font-weight: 600;
+    font-size: 24px;
+}
+
+.footer-block p {
+    color: #8b90a0;
+    font-size: 18px;
+}
 </style>
 </head>
 
@@ -168,7 +174,9 @@ button:hover {
 <div class="container">
 
 <div class="title-wrapper">
-<h1>Proyección Estratégica de Capital</h1>
+    <div class="title-plate">
+        <h1>Proyección Estratégica de Capital</h1>
+    </div>
 </div>
 
 <div class="simulator">
@@ -211,9 +219,9 @@ button:hover {
 
 </div>
 
-<div style="margin-top:90px; text-align:center; max-width:720px; margin-left:auto; margin-right:auto;">
-<h2 style="font-weight:600; font-size:24px;">La claridad financiera transforma decisiones en crecimiento</h2>
-<p style="color:#8b90a0; font-size:18px;">
+<div class="footer-block">
+<h2>La claridad financiera transforma decisiones en crecimiento</h2>
+<p>
 Controlar el futuro de tu dinero empieza por comprender cómo evoluciona tu capital en el tiempo.
 </p>
 </div>
@@ -236,9 +244,7 @@ function calculate() {
 
     for (let i = 1; i <= months; i++) {
         total = total * (1 + rate) + monthly;
-        if (i % 12 === 0) {
-            data.push(total);
-        }
+        if (i % 12 === 0) data.push(total);
     }
 
     const invested = monthly * months;

@@ -6,12 +6,13 @@
 <title>Simulador de Inversión | Fynantium</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #0f1117;
+    font-family: 'Inter', sans-serif;
+    background-color: #0B0F1A;
     color: #ffffff;
 }
 
@@ -21,20 +22,34 @@ body {
     padding: 40px 20px;
 }
 
+.logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo img {
+    height: 60px;
+}
+
 h1 {
     text-align: center;
+    font-size: 34px;
+    font-weight: 700;
     margin-bottom: 10px;
+    background: linear-gradient(90deg, #ffffff, #d4af37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .subtitle {
     text-align: center;
-    margin-bottom: 40px;
-    color: #aaaaaa;
+    margin-bottom: 50px;
+    color: #9aa0ac;
 }
 
 .simulator {
     display: flex;
-    gap: 40px;
+    gap: 50px;
     flex-wrap: wrap;
 }
 
@@ -43,29 +58,37 @@ h1 {
     min-width: 300px;
 }
 
+label {
+    font-size: 14px;
+    color: #9aa0ac;
+}
+
 input {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 18px;
+    border-radius: 8px;
     border: none;
-    background-color: #1c1f26;
+    background-color: #161b26;
     color: white;
+    font-size: 15px;
 }
 
 input:disabled {
-    background-color: #2a2e38;
-    color: #888;
+    background-color: #1d2230;
+    color: #777;
 }
 
 button {
-    width: 100%;
-    padding: 12px;
+    padding: 14px 30px;
     background-color: #d4af37;
     border: none;
-    border-radius: 6px;
-    font-weight: bold;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
     cursor: pointer;
+    display: block;
+    margin-top: 10px;
 }
 
 button:hover {
@@ -73,25 +96,35 @@ button:hover {
 }
 
 .result-box {
-    background-color: #1c1f26;
-    padding: 15px;
-    border-radius: 6px;
-    margin-bottom: 10px;
+    background-color: #161b26;
+    padding: 18px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.chart-container {
+    background-color: #161b26;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
 }
 
 .psychological {
-    margin-top: 60px;
+    margin-top: 80px;
     text-align: center;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.highlight {
-    color: #ff4d4d;
-    font-size: 24px;
-    font-weight: bold;
+.psychological h2 {
+    font-weight: 600;
+    margin-bottom: 15px;
 }
 
-canvas {
-    margin-top: 20px;
+.psychological p {
+    color: #9aa0ac;
+    font-size: 18px;
 }
 </style>
 </head>
@@ -99,6 +132,11 @@ canvas {
 <body>
 
 <div class="container">
+
+<div class="logo">
+    <!-- Sustituye la ruta si tu logo está en otra carpeta -->
+    <img src="logo.png" alt="Fynantium Logo">
+</div>
 
 <h1>Simula cómo puede crecer tu dinero con el tiempo</h1>
 <p class="subtitle">Rentabilidad estimada 8% anual · Inflación 2% anual</p>
@@ -127,15 +165,18 @@ canvas {
 <div class="result-box">Beneficio generado: <strong id="profit"></strong></div>
 <div class="result-box">Capital ajustado a inflación: <strong id="real"></strong></div>
 
-<canvas id="growthChart"></canvas>
+<div class="chart-container">
+    <canvas id="growthChart"></canvas>
+</div>
 </div>
 
 </div>
 
 <div class="psychological">
-<h2>El tiempo importa más de lo que parece</h2>
-<p>Si empiezas 5 años más tarde, podrías perder:</p>
-<div class="highlight" id="loss"></div>
+<h2>El control financiero empieza con claridad</h2>
+<p>
+Entender cómo evoluciona tu dinero en el tiempo es el primer paso para tomar decisiones estratégicas y construir un futuro con mayor seguridad y libertad.
+</p>
 </div>
 
 </div>
@@ -170,17 +211,6 @@ function calculate() {
     document.getElementById("profit").innerText = profit.toLocaleString("es-ES", {style:"currency", currency:"EUR"});
     document.getElementById("real").innerText = real.toLocaleString("es-ES", {style:"currency", currency:"EUR"});
 
-    const lateYears = years - 5;
-    let lateTotal = 0;
-    if (lateYears > 0) {
-        const lateMonths = lateYears * 12;
-        for (let i = 1; i <= lateMonths; i++) {
-            lateTotal = lateTotal * (1 + rate) + monthly;
-        }
-    }
-    const loss = total - lateTotal;
-    document.getElementById("loss").innerText = loss.toLocaleString("es-ES", {style:"currency", currency:"EUR"});
-
     if (chart) chart.destroy();
 
     const ctx = document.getElementById('growthChart').getContext('2d');
@@ -189,18 +219,18 @@ function calculate() {
         data: {
             labels: Array.from({length: years}, (_, i) => i + 1),
             datasets: [{
-                label: 'Crecimiento',
                 data: data,
                 borderColor: '#d4af37',
-                backgroundColor: 'rgba(212,175,55,0.1)',
-                tension: 0.3
+                backgroundColor: 'rgba(212,175,55,0.08)',
+                tension: 0.35,
+                fill: true
             }]
         },
         options: {
             plugins: { legend: { display: false }},
             scales: {
-                x: { ticks: { color: '#aaa' }},
-                y: { ticks: { color: '#aaa' }}
+                x: { ticks: { color: '#8b90a0' }},
+                y: { ticks: { color: '#8b90a0' }}
             }
         }
     });

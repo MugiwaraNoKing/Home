@@ -93,6 +93,11 @@ h1 {
     flex-wrap: wrap;
 }
 
+input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(212,175,55,0.25);
+}
+
 .input-group {
     display: flex;
     flex-direction: column;
@@ -215,6 +220,16 @@ canvas {
     display: block;
     margin-top: 8px;
     color: #d4af37;
+}
+.pro-block {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.6s ease;
+}
+
+.pro-block.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 </style>
@@ -357,6 +372,8 @@ function calculate() {
     });
 
     document.getElementById("results").classList.add("visible");
+    document.querySelector(".pro-block").classList.add("visible");
+
 }
 
 </script>

@@ -1,2 +1,2 @@
-# simulador-inversion
+# Home
 Simulador de inversión con inflación

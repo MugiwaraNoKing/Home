@@ -21,12 +21,32 @@ body {
 /* LOGO */
 .logo {
     position: absolute;
-    top: 30px;
-    left: 50px;
+    top: 25px;
+    left: 40px;
 }
 
 .logo img {
     height: 180px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .logo {
+        position: relative;
+        text-align: center;
+        top: 0;
+        left: 0;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .logo img {
+        height: 90px;
+    }
+
+    .container {
+        margin-top: 10px;
+    }
     
 }
 

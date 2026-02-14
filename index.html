@@ -3,218 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simulador de Inversión | Fynantium</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+<title>Fynantium — Laboratorio Cuantitativo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 
-/* RESET */
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-
-/* FONDO */
 body {
-    background: #0f1115;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #0f1116;
     color: #e5e7eb;
-
 }
 
-/* LOGO */
-.logo {
-    position: absolute;
-    top: 25px;
-    left: 40px;
+/* HEADER */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 60px;
 }
 
 .logo img {
-    height: 250px;
+    height: 90px;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    .logo {
-        position: relative;
-        text-align: center;
-        top: 0;
-        left: 0;
-        margin-top: 20px;
-        margin-bottom: 10px;
-    }
-
-    .logo img {
-        height: 90px;
-    }
-
-    .container {
-        margin-top: 10px;
-    }
-    
-}
-
-/* CONTENIDO */
-.container {
-    max-width: 1100px;
-    margin: 40px auto 60px auto;
-    padding: 0 20px;
-}
-
-/* TITULO */
-.title-wrapper {
+/* HERO */
+.hero {
     text-align: center;
-    margin-bottom: 70px;
+    padding: 120px 20px 80px 20px;
+    max-width: 900px;
+    margin: auto;
 }
 
-.title-plate {
-    display: inline-block;
-    padding: 22px 60px;
-    border-radius: 16px;
-    background: linear-gradient(145deg, #1a1f2b, #10141d);
-    box-shadow:
-        inset 0 1px 2px rgba(255,255,255,0.05),
-        inset 0 -2px 6px rgba(0,0,0,0.6),
-        0 8px 25px rgba(0,0,0,0.5);
-    border: 1px solid rgba(212,175,55,0.25);
-}
-
-h1 {
-    font-size: 38px;
+.hero h1 {
+    font-size: 48px;
     font-weight: 500;
-    letter-spacing: 1.5px;
-    background: linear-gradient(90deg, #ffffff, #d6d6d6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-/* INPUTS */
-.inputs {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
     margin-bottom: 25px;
-    flex-wrap: wrap;
+    letter-spacing: 1px;
 }
 
-.input-group {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-}
-
-label {
-    font-size: 14px;
-    margin-bottom: 6px;
+.hero p {
+    font-size: 20px;
+    font-weight: 300;
     color: #9ca3af;
+    margin-bottom: 50px;
 }
 
-input {
-    width: 140px;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    background: #1c2027;
-    color: white;
-    font-size: 15px;
-    text-align: center;
-}
-
-input[disabled] {
-    opacity: 0.6;
-}
-
-/* NOTA */
-.note {
-    text-align: center;
-    font-size: 13px;
-    color: #9ca3af;
-    margin-bottom: 30px;
-}
-
-/* BOTON */
-button {
-    display: block;
-    margin: 0 auto 50px auto;
-    padding: 14px 40px;
-    font-size: 17px;
-    border-radius: 30px;
-    border: none;
-    cursor: pointer;
-    background: linear-gradient(90deg, #d4af37, #b8962e);
-    color: #111;
+/* BOTON CTA */
+.cta {
+    display: inline-block;
+    padding: 18px 40px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #d4af37, #b9932f);
+    color: #0f1116;
     font-weight: 600;
+    text-decoration: none;
+    font-size: 18px;
     transition: all 0.3s ease;
 }
 
-button:hover {
+.cta:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 25px rgba(212,175,55,0.4);
 }
 
-/* RESULTADOS */
-.results {
-    background: #141821;
-    border-radius: 14px;
-    padding: 35px;
-    margin-bottom: 50px;
-    border-top: 2px solid rgba(212,175,55,0.6);
-    opacity: 0;
-    transform: translateY(10px);
-    transition: all 0.5s ease;
-}
-
-.results.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.results-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
-    gap: 30px;
+/* BLOQUE INFERIOR */
+.section {
     text-align: center;
+    padding: 100px 20px;
+    border-top: 1px solid rgba(255,255,255,0.05);
 }
 
-.metric h3 {
-    font-size: 14px;
+.section h2 {
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.section p {
     color: #9ca3af;
-    margin-bottom: 8px;
+    max-width: 700px;
+    margin: auto;
 }
 
-.metric p {
-    font-size: 26px;
-    font-weight: 600;
-    color: #ffffff;
-}
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 36px;
+    }
 
-/* GRAFICA */
-.chart-container {
-    background: #1a1f27;
-    padding: 20px;
-    border-radius: 12px;
-}
+    .hero p {
+        font-size: 18px;
+    }
 
-canvas {
-    max-height: 320px;
-}
-
-/* MICROCOPY */
-.microcopy {
-    text-align: center;
-    font-size: 13px;
-    color: #8b8f98;
-    margin-top: 20px;
-}
-
-/* PRO */
-.pro-block {
-    text-align: center;
-    margin-top: 60px;
-    font-size: 14px;
-    color: #9ca3af;
-}
-
-.pro-block span {
-    display: block;
-    margin-top: 8px;
-    color: #d4af37;
+    .header {
+        padding: 20px;
+    }
 }
 
 </style>
@@ -222,142 +104,25 @@ canvas {
 
 <body>
 
-<div class="logo">
-    <img src="logo-fynantium.png" alt="Fynantium Logo">
+<div class="header">
+    <div class="logo">
+        <img src="assets/logo-fynantium.png" alt="Fynantium">
+    </div>
 </div>
 
-<div class="container">
-
-    <div class="title-wrapper">
-        <div class="title-plate">
-            <h1>Simulador de Inversión</h1>
-        </div>
-    </div>
-
-    <div class="inputs">
-        <div class="input-group">
-            <label>Aportación mensual (€)</label>
-            <input type="number" id="monthly" value="300">
-        </div>
-
-        <div class="input-group">
-            <label>Años de inversión</label>
-            <input type="number" id="years" value="20">
-        </div>
-
-        <div class="input-group">
-            <label>Rentabilidad anual (%)</label>
-            <input type="number" value="8" disabled>
-        </div>
-
-        <div class="input-group">
-            <label>Inflación anual (%)</label>
-            <input type="number" value="2" disabled>
-        </div>
-    </div>
-
-    <div class="note">
-        Rentabilidad media anual 8% · Inflación media anual 2%
-    </div>
-
-    <button onclick="calculate()">Calcular proyección</button>
-
-    <div class="results" id="results">
-        <div class="results-grid">
-            <div class="metric">
-                <h3>Capital final</h3>
-                <p id="finalCapital">-</p>
-            </div>
-            <div class="metric">
-                <h3>Capital ajustado a inflación</h3>
-                <p id="realCapital">-</p>
-            </div>
-            <div class="metric">
-                <h3>Total aportado</h3>
-                <p id="totalInvested">-</p>
-            </div>
-            <div class="metric">
-                <h3>Intereses generados</h3>
-                <p id="interestEarned">-</p>
-            </div>
-        </div>
-
-        <div class="chart-container">
-            <canvas id="chart"></canvas>
-        </div>
-
-        <div class="microcopy">
-            Resultados basados en rendimientos históricos reales.
-        </div>
-    </div>
-
-    <div class="pro-block">
-        Versión avanzada próximamente
-        <span>Mayor control · Comparación de escenarios · Exportación profesional</span>
-    </div>
-
+<div class="hero">
+    <h1>Herramientas inteligentes para sacar partido a tu dinero de forma sencilla.</h1>
+    <p>Laboratorio cuantitativo minimalista diseñado para ofrecer claridad, estrategia y control.</p>
+    <a href="/simuladordeinversion" class="cta">Acceder al Simulador</a>
 </div>
 
-<script>
-
-let chart;
-
-function calculate() {
-    const monthly = parseFloat(document.getElementById("monthly").value);
-    const years = parseFloat(document.getElementById("years").value);
-    const rate = 0.08;
-    const inflation = 0.02;
-
-    const months = years * 12;
-    let balance = 0;
-    let data = [];
-
-    for (let i = 0; i <= months; i++) {
-        balance = balance * (1 + rate/12) + monthly;
-        if (i % 12 === 0) {
-            data.push(balance);
-        }
-    }
-
-    const totalInvested = monthly * months;
-    const finalCapital = balance;
-    const realCapital = finalCapital / Math.pow(1 + inflation, years);
-    const interestEarned = finalCapital - totalInvested;
-
-    document.getElementById("finalCapital").innerText = finalCapital.toLocaleString("es-ES", {style:"currency", currency:"EUR"});
-    document.getElementById("realCapital").innerText = realCapital.toLocaleString("es-ES", {style:"currency", currency:"EUR"});
-    document.getElementById("totalInvested").innerText = totalInvested.toLocaleString("es-ES", {style:"currency", currency:"EUR"});
-    document.getElementById("interestEarned").innerText = interestEarned.toLocaleString("es-ES", {style:"currency", currency:"EUR"});
-
-    const ctx = document.getElementById("chart").getContext("2d");
-
-    if (chart) chart.destroy();
-
-    chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: Array.from({length: years + 1}, (_, i) => i),
-            datasets: [{
-                data: data,
-                borderColor: "#d4af37",
-                borderWidth: 3,
-                fill: false,
-                tension: 0.3
-            }]
-        },
-        options: {
-            plugins: { legend: { display: false }},
-            scales: {
-                x: { grid: { color: "rgba(255,255,255,0.05)" }},
-                y: { grid: { color: "rgba(255,255,255,0.05)" }}
-            }
-        }
-    });
-
-    document.getElementById("results").classList.add("visible");
-}
-
-</script>
+<div class="section">
+    <h2>Precisión estratégica</h2>
+    <p>
+    Fynantium desarrolla herramientas cuantitativas diseñadas para facilitar decisiones financieras más inteligentes.
+    Sin ruido. Sin complejidad innecesaria.
+    </p>
+</div>
 
 </body>
 </html>

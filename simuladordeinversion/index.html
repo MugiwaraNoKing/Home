@@ -103,7 +103,8 @@ h1 {
 
 input:focus {
     outline: none;
-    box-shadow: 0 0 0 2px rgba(212,175,55,0.25);
+    border: 1px solid rgba(212,175,55,0.6);
+    box-shadow: 0 0 0 3px rgba(212,175,55,0.12);
 }
 
 .input-group {
@@ -119,18 +120,26 @@ label {
 }
 
 input {
-    width: 140px;
-    padding: 10px;
+    width: 150px;
+    padding: 12px;
     border-radius: 8px;
-    border: none;
+    border: 1px solid rgba(255,255,255,0.08);
     background: linear-gradient(145deg, #13211c, #0e1a16);
     color: white;
     font-size: 15px;
     text-align: center;
+    transition: all 0.25s ease;
+    font-variant-numeric: tabular-nums;
 }
 
 input[disabled] {
-    opacity: 0.6;
+    opacity: 0.5;
+    border: 1px solid rgba(255,255,255,0.05);
+    cursor: not-allowed;
+}
+
+input:hover {
+    border: 1px solid rgba(212,175,55,0.35);
 }
 
 /* NOTA */

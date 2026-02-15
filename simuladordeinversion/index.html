@@ -513,7 +513,7 @@ canvas {
 
 <script>
 
-        const externalTooltipHandler = (context) => {
+    const externalTooltipHandler = (context) => {
         const {chart, tooltip} = context;
         let tooltipEl = document.getElementById('chartjs-tooltip');
 
@@ -548,6 +548,27 @@ canvas {
         tooltipEl.style.left = position.left + window.pageXOffset + tooltip.caretX + 'px';
         tooltipEl.style.top = position.top + window.pageYOffset + tooltip.caretY - 40 + 'px';
     };
+
+const verticalLinePlugin = {
+    id: 'verticalLine',
+    afterDraw: (chart) => {
+        if (chart.tooltip?._active?.length) {
+            const ctx = chart.ctx;
+            const x = chart.tooltip._active[0].element.x;
+            const topY = chart.scales.y.top;
+            const bottomY = chart.scales.y.bottom;
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(x, topY);
+            ctx.lineTo(x, bottomY);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = 'rgba(212,175,55,0.35)';
+            ctx.stroke();
+            ctx.restore();
+        }
+    }
+};
 
 let chart;
 
@@ -593,69 +614,46 @@ function calculate() {
 
     if (chart) chart.destroy();
 
-    chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: Array.from({length: years + 1}, (_, i) => i),
-            datasets: [{
-                data: data,
-                borderColor: "#d4af37",
-                borderWidth: 3,
-                fill: false,
-                tension: 0.3
-            }]
-        },
-        options: {
-            plugins: {
-        ...
-        annotation: false
+chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: Array.from({length: years + 1}, (_, i) => i),
+        datasets: [{
+            data: data,
+            borderColor: "#d4af37",
+            borderWidth: 3,
+            fill: false,
+            tension: 0.3,
+            pointRadius: 0
+        }]
     },
-    elements: {
-        point: {
-            radius: 0
-        }
+    options: {
+        interaction: {
+            mode: 'index',
+            intersect: false
+        },
+        hover: {
+            mode: 'index',
+            intersect: false
+        },
+        plugins: {
             legend: { display: false },
             tooltip: {
-            enabled: false,
-            external: externalTooltipHandler
-                const verticalLinePlugin = {
-    id: 'verticalLine',
-    afterDraw: (chart) => {
-        if (chart.tooltip?._active?.length) {
-            const ctx = chart.ctx;
-            const x = chart.tooltip._active[0].element.x;
-            const topY = chart.scales.y.top;
-            const bottomY = chart.scales.y.bottom;
-
-            ctx.save();
-            ctx.beginPath();
-            ctx.moveTo(x, topY);
-            ctx.lineTo(x, bottomY);
-            ctx.lineWidth = 1;
-            ctx.strokeStyle = 'rgba(212,175,55,0.35)';
-            ctx.stroke();
-            ctx.restore();
-        }
-    }
-};
-
-        }
-    },
-    interaction: {
-        mode: 'index',
-        intersect: false
-    },
-    hover: {
-        mode: 'index',
-        intersect: false
-    },
-
-            scales: {
-                x: { grid: { color: "rgba(255,255,255,0.05)" }},
-                y: { grid: { color: "rgba(255,255,255,0.05)" }}
+                enabled: false,
+                external: externalTooltipHandler
+            }
+        },
+        scales: {
+            x: {
+                grid: { color: "rgba(255,255,255,0.05)" }
+            },
+            y: {
+                grid: { color: "rgba(255,255,255,0.05)" }
             }
         }
-    });
+    },
+    plugins: [verticalLinePlugin]
+});
 
     document.getElementById("results").classList.add("visible");
     document.querySelector(".pro-block").classList.add("visible");

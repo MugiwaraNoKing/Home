@@ -143,7 +143,7 @@ input[disabled] {
 
 /* BOTON */
 .btn {
-    display: inline-block;
+    display: block;
     padding: 17px 42px;
     letter-spacing: 0.4px;
     font-size: 17px;
@@ -187,8 +187,10 @@ button.btn {
 button.btn:active {
     transform: translateY(-1px);
 }
-
-
+    .btn-wrapper {
+    text-align: center;
+    margin: 40px 0 60px 0;
+}
 
 /* RESULTADOS */
 .results {
@@ -343,7 +345,9 @@ canvas {
         Rentabilidad media anual 8% · Inflación media anual 2%
     </div>
 
+    <div class="btn-wrapper">
     <button class="btn" onclick="calculate()">Calcular proyección</button>
+    </div>
 
     <div class="results" id="results">
         <div class="results-grid">

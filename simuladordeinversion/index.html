@@ -153,6 +153,29 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
+.input-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.currency-symbol {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #9aa59e;
+    pointer-events: none;
+}
+
+.input-wrapper input {
+    padding-left: 28px;
+}
+.input-wrapper input.changed {
+    transition: background 0.3s ease;
+    background: linear-gradient(145deg, #162a23, #111f1a);
+}
+
 
 /* NOTA */
 .note {
@@ -366,10 +389,14 @@ canvas {
 
     <div class="inputs">
         <div class="input-group">
-            <label>Aportación mensual (€)</label>
-            <input type="number" id="monthly" value="300">
+        <label>Aportación mensual</label>
+        <div class="input-wrapper">
+        <span class="currency-symbol">€</span>
+        <input type="text" id="monthly" value="300">
         </div>
+    </div>
 
+       
         <div class="input-group">
             <label>Años de inversión</label>
             <input type="number" id="years" value="20">
@@ -454,7 +481,9 @@ function calculate() {
     btn.style.pointerEvents = "auto";
     }, 600);
 
-    const monthly = parseFloat(document.getElementById("monthly").value);
+    const monthly = parseFloat(
+    document.getElementById("monthly").value.replace(/\./g, "")
+);
     const years = parseFloat(document.getElementById("years").value);
     const rate = 0.08;
     const inflation = 0.02;
@@ -532,6 +561,22 @@ function calculate() {
 }
 
 }
+
+    function formatNumber(value) {
+    return value.replace(/\D/g, "")
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+    const monthlyInput = document.getElementById("monthly");
+
+monthlyInput.addEventListener("input", function() {
+    this.value = formatNumber(this.value);
+    this.classList.add("changed");
+
+    setTimeout(() => {
+        this.classList.remove("changed");
+    }, 300);
+});
 
 </script>
 

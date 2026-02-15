@@ -454,10 +454,10 @@ function calculate() {
     const realCapital = finalCapital / Math.pow(1 + inflation, years);
     const interestEarned = finalCapital - totalInvested;
 
-    document.getElementById("finalCapital").innerText = finalCapital.toLocaleString("es-ES", {style:"currency", currency:"EUR"});
-    document.getElementById("realCapital").innerText = realCapital.toLocaleString("es-ES", {style:"currency", currency:"EUR"});
-    document.getElementById("totalInvested").innerText = totalInvested.toLocaleString("es-ES", {style:"currency", currency:"EUR"});
-    document.getElementById("interestEarned").innerText = interestEarned.toLocaleString("es-ES", {style:"currency", currency:"EUR"});
+    animateValue("finalCapital", 0, finalCapital, 900);
+    animateValue("realCapital", 0, realCapital, 900);
+    animateValue("totalInvested", 0, totalInvested, 700);
+    animateValue("interestEarned", 0, interestEarned, 900);
 
     const ctx = document.getElementById("chart").getContext("2d");
 
@@ -486,6 +486,29 @@ function calculate() {
 
     document.getElementById("results").classList.add("visible");
     document.querySelector(".pro-block").classList.add("visible");
+    
+    function animateValue(elementId, start, end, duration) {
+    const element = document.getElementById(elementId);
+    const range = end - start;
+    const startTime = performance.now();
+
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const value = start + range * progress;
+
+        element.innerText = value.toLocaleString("es-ES", {
+            style: "currency",
+            currency: "EUR"
+        });
+
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        }
+    }
+
+    requestAnimationFrame(update);
+}
 
 }
 

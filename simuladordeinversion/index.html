@@ -548,41 +548,40 @@ canvas {
         tooltipEl.style.left = position.left + window.pageXOffset + tooltip.caretX + 'px';
         tooltipEl.style.top = position.top + window.pageYOffset + tooltip.caretY - 40 + 'px';
     };
+    
+    const verticalLinePlugin = {
+        id: 'verticalLine',
+        afterDraw: (chart) => {
+            if (chart.tooltip?._active?.length) {
+                const ctx = chart.ctx;
+                const x = chart.tooltip._active[0].element.x;
+                const topY = chart.scales.y.top;
+                const bottomY = chart.scales.y.bottom;
 
-const verticalLinePlugin = {
-    id: 'verticalLine',
-    afterDraw: (chart) => {
-        if (chart.tooltip?._active?.length) {
-            const ctx = chart.ctx;
-            const x = chart.tooltip._active[0].element.x;
-            const topY = chart.scales.y.top;
-            const bottomY = chart.scales.y.bottom;
-
-            ctx.save();
-            ctx.beginPath();
-            ctx.moveTo(x, topY);
-            ctx.lineTo(x, bottomY);
-            ctx.lineWidth = 1;
-            ctx.strokeStyle = 'rgba(212,175,55,0.35)';
-            ctx.stroke();
-            ctx.restore();
-        };
-    const glowPlugin = {
-            id: 'glow',
-            beforeDatasetDraw(chart, args) {
-                const {ctx} = chart;
                 ctx.save();
-                ctx.shadowColor = "rgba(212,175,55,0.25)";
-                ctx.shadowBlur = 12;
-                ctx.shadowOffsetX = 0;
-                ctx.shadowOffsetY = 0;
-            };
-         afterDatasetDraw(chart, args) {
-            chart.ctx.restore();
+                ctx.beginPath();
+                ctx.moveTo(x, topY);
+                ctx.lineTo(x, bottomY);
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = 'rgba(212,175,55,0.35)';
+                ctx.stroke();
+                ctx.restore();
             }
-        };
-    }
-};
+           }
+    };
+
+    const glowPlugin = {
+        id: 'glow',
+        beforeDatasetDraw(chart) {
+            const {ctx} = chart;
+            ctx.save();
+            ctx.shadowColor = "rgba(212,175,55,0.25)";
+            ctx.shadowBlur = 12;
+        },
+        afterDatasetDraw(chart) {
+            chart.ctx.restore();
+        }
+    };
 
 let chart;
 
@@ -703,18 +702,7 @@ chart = new Chart(ctx, {
                 }
             }
         }
-    beforeDatasetDraw(chart, args) {
-        const {ctx} = chart;
-        ctx.save();
-        ctx.shadowColor = "rgba(212,175,55,0.25)";
-        ctx.shadowBlur = 12;
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 0;
     },
-    afterDatasetDraw(chart, args) {
-        chart.ctx.restore();
-    }
-};
 
     plugins: [verticalLinePlugin, glowPlugin]
 });

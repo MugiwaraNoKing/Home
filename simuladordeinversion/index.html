@@ -28,14 +28,13 @@ body {
     position: absolute;
     top: 25px;
     left: 40px;
-    letter-spacing: 0.6px;
-    font-weight: 500;
+}
+
+.logo img {
+    height: 250px;
 }
     .logo span {
     font-weight: 600;
-}
-.logo img {
-    height: 250px;
 }
 
 /* RESPONSIVE */
@@ -181,6 +180,15 @@ input[disabled] {
 .btn:hover::after {
     left: 100%;
 }
+button.btn {
+    border: none;
+    cursor: pointer;
+}
+button.btn:active {
+    transform: translateY(-1px);
+}
+
+
 
 /* RESULTADOS */
 .results {
@@ -296,9 +304,9 @@ canvas {
 <body>
 
 <div class="logo">
-<a href="https://fynantium.com">
-  <img src="assets/logo-fynantium.png" alt="Fynantium" class="logo">
-</a>
+  <a href="https://fynantium.com">
+    <img src="assets/logo-fynantium.png" alt="Fynantium">
+  </a>
 </div>
 
 <div class="container">

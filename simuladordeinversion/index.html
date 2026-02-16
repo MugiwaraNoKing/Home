@@ -317,6 +317,27 @@ button.btn:active {
 .results.visible .metric:nth-child(3) { transition-delay: 0.15s; }
 .results.visible .metric:nth-child(4) { transition-delay: 0.20s; }
 
+    .pro-locked {
+        opacity: 0.45;
+        filter: grayscale(40%);
+        transition: opacity 0.3s ease;
+    }
+
+    .pro-locked:hover {
+        opacity: 0.7;
+    }
+
+    .lock {
+        margin-left: 6px;
+        font-size: 13px;
+        opacity: 0.7;
+    }
+
+    .locked-value {
+        font-size: 14px;
+        letter-spacing: 0.4px;
+    }
+
 /* GRAFICA */
 .chart-container {
     background: linear-gradient(145deg, #162620, #101c17);
@@ -568,6 +589,16 @@ canvas {
         Simulación por escenarios, análisis ajustado por inflación y proyecciones avanzadas estarán disponibles próximamente.
         </p>
         <span>Mayor control · Comparación de escenarios · Exportación profesional</span>
+    </div>
+    
+    <div class="metric pro-locked">
+        <div class="label">
+            Rentabilidad anualizada real
+            <span class="lock">🔒</span>
+        </div>
+        <div class="value locked-value">
+            Disponible en PRO
+        </div>
     </div>
 
 </div>

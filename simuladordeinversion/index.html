@@ -323,7 +323,14 @@ button.btn:active {
         filter: grayscale(40%);
         transition: opacity 0.3s ease;
     }
-
+    .pro-inline {
+        font-size: 11px;
+        font-weight: 500;
+        color: rgba(212,175,55,0.65);
+        margin-left: 6px;
+        letter-spacing: 0.4px;
+    }
+        
     .pro-locked:hover {
         opacity: 0.7;
     }
@@ -336,7 +343,9 @@ button.btn:active {
 
     .locked-value {
         font-size: 14px;
-        letter-spacing: 0.4px;
+        color: rgba(255,255,255,0.35);
+        font-weight: 400;
+        letter-spacing: 0.3px;
     }
 
 /* GRAFICA */
@@ -567,12 +576,11 @@ canvas {
                 <p id="realCapital">-</p>
             </div>
             <div class="metric pro-locked">
-                <h3>
-                    Rentabilidad anualizada real
-                    <span class="lock">🔒</span>
-                </h3>
-                <p class="locked-value">Disponible en PRO</p>
-            </div>
+            <h3>
+                Rentabilidad anualizada
+            </h3>
+            <p class="locked-value">— Disponible en PRO —</p>
+        </div>
 
         </div>
 

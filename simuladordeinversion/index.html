@@ -651,17 +651,27 @@ canvas {
     };
 
     const glowPlugin = {
-        id: 'glow',
-        beforeDatasetDraw(chart) {
-            const {ctx} = chart;
-            ctx.save();
-            ctx.shadowColor = "rgba(212,175,55,0.25)";
-            ctx.shadowBlur = 12;
-        },
-        afterDatasetDraw(chart) {
-            chart.ctx.restore();
-        }
-    };
+            id: 'glow',
+            beforeDatasetDraw(chart, args, options) {
+                const {ctx, data} = chart;
+                ctx.save();
+
+                const dataset = data.datasets[0].data;
+                const maxValue = dataset[dataset.length - 1];
+
+                // Escalado elegante (ajústalo si quieres)
+                const intensity = Math.min(maxValue / 150000, 1); 
+
+                const blur = 8 + (intensity * 14); 
+                const opacity = 0.18 + (intensity * 0.22);
+
+                ctx.shadowColor = `rgba(212,175,55,${opacity})`;
+                ctx.shadowBlur = blur;
+            },
+            afterDatasetDraw(chart) {
+                chart.ctx.restore();
+            }
+        };
 
 let chart;
 

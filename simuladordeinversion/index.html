@@ -316,6 +316,7 @@ button.btn:active {
 .results.visible .metric:nth-child(2) { transition-delay: 0.10s; }
 .results.visible .metric:nth-child(3) { transition-delay: 0.15s; }
 .results.visible .metric:nth-child(4) { transition-delay: 0.20s; }
+.results.visible .metric:nth-child(5) { transition-delay: 0.25s; }
 
     .pro-locked {
         opacity: 0.45;
@@ -565,6 +566,14 @@ canvas {
                 <h3>Valor real ajustado a inflación</h3>
                 <p id="realCapital">-</p>
             </div>
+            <div class="metric pro-locked">
+                <h3>
+                    Rentabilidad anualizada real
+                    <span class="lock">🔒</span>
+                </h3>
+                <p class="locked-value">Disponible en PRO</p>
+            </div>
+
         </div>
 
         <div class="chart-container">
@@ -589,16 +598,6 @@ canvas {
         Simulación por escenarios, análisis ajustado por inflación y proyecciones avanzadas estarán disponibles próximamente.
         </p>
         <span>Mayor control · Comparación de escenarios · Exportación profesional</span>
-    </div>
-    
-    <div class="metric pro-locked">
-        <div class="label">
-            Rentabilidad anualizada real
-            <span class="lock">🔒</span>
-        </div>
-        <div class="value locked-value">
-            Disponible en PRO
-        </div>
     </div>
 
 </div>

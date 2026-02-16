@@ -390,9 +390,19 @@ canvas {
 
         .tooltip-row {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 4px;
+            align-items: center;
+            margin-bottom: 6px;
             color: #cfd6d2;
+        }
+
+        .tooltip-row span:first-child {
+            flex: 1;
+            padding-right: 14px;
+        }
+
+        .tooltip-row span:last-child {
+            text-align: right;
+            min-width: 110px;
         }
 
         .tooltip-divider {

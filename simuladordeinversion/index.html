@@ -615,8 +615,6 @@ function calculate() {
 
     const totalInvested = monthly * months;
     const finalCapital = balance;
-    const capitalAportado = aportacionMensual * 12 * años;
-    const interesesGenerados = capitalFinal - capitalAportado;
     const realCapital = finalCapital / Math.pow(1 + inflation, years);
     const interestEarned = finalCapital - totalInvested;
 

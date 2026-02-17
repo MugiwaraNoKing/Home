@@ -77,6 +77,23 @@ body {
     text-align: center;
     color: rgba(255,255,255,0.35);
 }
+    
+#pro-calculate {
+    background: rgba(212,175,55,0.9);
+    border: none;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+#pro-calculate:hover {
+    transform: translateY(-2px);
+    background: rgba(212,175,55,1);
+}
+
 </style>
 </head>
 
@@ -123,6 +140,10 @@ body {
             </div>
 
         </div>
+       
+        <div style="margin-top: 30px;">
+        <button id="pro-calculate">Calcular simulación</button>
+        </div>
 
 </section>
 
@@ -133,9 +154,15 @@ body {
     </section>
 
     <section class="pro-section">
-        <div class="section-placeholder">
-            BLOQUE 3 — Métricas profesionales
-        </div>
+
+    <h2 style="margin-bottom: 25px; font-size: 20px; font-weight: 500;">
+        Resultados PRO
+    </h2>
+
+    <div id="pro-results" class="section-placeholder">
+        Introduce los parámetros y calcula la simulación.
+    </div>
+
     </section>
 
     <section class="pro-section">
@@ -145,6 +172,51 @@ body {
     </section>
 
 </div>
+
+<script>
+
+function calculateProSimulation() {
+
+    const monthly = parseFloat(document.getElementById("pro-monthly").value) || 0;
+    const years = parseInt(document.getElementById("pro-years").value) || 0;
+    const initial = parseFloat(document.getElementById("pro-initial").value) || 0;
+    const rate = (parseFloat(document.getElementById("pro-rate").value) || 0) / 100;
+    const inflation = (parseFloat(document.getElementById("pro-inflation").value) || 0) / 100;
+
+    const months = years * 12;
+    const monthlyRate = rate / 12;
+
+    let total = initial;
+
+    for (let i = 0; i < months; i++) {
+        total = (total + monthly) * (1 + monthlyRate);
+    }
+
+    const totalContributions = (monthly * months) + initial;
+
+    const realValue = total / Math.pow(1 + inflation, years);
+
+    const profit = total - totalContributions;
+
+    document.getElementById("pro-results").innerHTML = `
+        <div style="margin-bottom:10px;">
+            Total aportado: ${totalContributions.toLocaleString("es-ES", {minimumFractionDigits: 2})} €
+        </div>
+        <div>
+            Beneficio generado: ${profit.toLocaleString("es-ES", {minimumFractionDigits: 2})} €
+        </div>
+        <div style="font-size:18px; margin-bottom:10px;">
+            Capital final: <strong>${total.toLocaleString("es-ES", {minimumFractionDigits: 2})} €</strong>
+        </div>
+        <div style="margin-bottom:10px;">
+            Capital final (ajustado por inflación): ${realValue.toLocaleString("es-ES", {minimumFractionDigits: 2})} €
+        </div>
+    `;
+}
+
+document.getElementById("pro-calculate").addEventListener("click", calculateProSimulation);
+
+</script>
 
 </body>
 </html>

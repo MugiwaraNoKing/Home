@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -526,6 +526,18 @@ canvas {
     opacity: 1;
     transform: translateY(0);
 }
+    .pro-title-link {
+    text-decoration: none;
+    color: rgba(255,255,255,0.9);
+    font-weight: 500;
+    transition: all 0.25s ease;
+}
+
+.pro-title-link:hover {
+    color: rgba(212,175,55,0.9);
+    transform: translateY(-2px);
+}
+
 
 </style>
 </head>
@@ -625,7 +637,9 @@ canvas {
 
     <div class="pro-block">
         <p>
-        Fynantium PRO — Acceso completo al laboratorio
+            <a href="pro.html" class="pro-title-link">
+                Fynantium PRO — Acceso completo al laboratorio
+            </a>
         </p>
         <p>
         Simulación por escenarios, análisis ajustado por inflación y proyecciones avanzadas estarán disponibles próximamente.

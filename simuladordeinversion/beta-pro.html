@@ -234,16 +234,6 @@ function calculateProSimulation() {
         <div class="pro-metrics-grid">
 
             <div class="pro-metric">
-                <span>Capital final nominal</span>
-                <strong>${total.toLocaleString("es-ES", {minimumFractionDigits: 2})} €</strong>
-            </div>
-
-            <div class="pro-metric">
-                <span>Capital ajustado por inflación</span>
-                <strong>${realValue.toLocaleString("es-ES", {minimumFractionDigits: 2})} €</strong>
-            </div>
-
-            <div class="pro-metric">
                 <span>Total aportado</span>
                 <strong>${totalContributions.toLocaleString("es-ES", {minimumFractionDigits: 2})} €</strong>
             </div>
@@ -251,6 +241,16 @@ function calculateProSimulation() {
             <div class="pro-metric">
                 <span>Beneficio generado</span>
                 <strong>${profit.toLocaleString("es-ES", {minimumFractionDigits: 2})} €</strong>
+            </div>
+            
+            <div class="pro-metric">
+                <span>Capital final</span>
+                <strong>${total.toLocaleString("es-ES", {minimumFractionDigits: 2})} €</strong>
+            </div>
+
+            <div class="pro-metric">
+                <span>Capital final ajustado por inflación</span>
+                <strong>${realValue.toLocaleString("es-ES", {minimumFractionDigits: 2})} €</strong>
             </div>
 
         </div>

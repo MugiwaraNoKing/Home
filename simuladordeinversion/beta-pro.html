@@ -452,6 +452,23 @@ function calculateProSimulation() {
             el.style.transform = "translateY(0)";
         }, index * 100);
     });
+    const selectedScenario = document.getElementById("pro-scenario").value;
+
+    let widthConservative = 2;
+    let widthBase = 2;
+    let widthAggressive = 2;
+
+    if (selectedScenario === "conservative") {
+        widthConservative = 4;
+    } else if (selectedScenario === "base") {
+        widthBase = 4;
+    } else if (selectedScenario === "aggressive") {
+        widthAggressive = 4;
+    } else {
+        // custom
+        widthBase = 4;
+    }
+
     const ctx = document.getElementById('proChart').getContext('2d');
 
     if (window.proChartInstance) {
@@ -501,7 +518,7 @@ al escenario base.
                 tension: 0.3,
                 pointRadius: 0,
                 pointHoverRadius: 5,
-                borderWidth: 2,
+                borderWidth: widthConservative,
                 fill: false,
             },
             {
@@ -511,7 +528,7 @@ al escenario base.
                 tension: 0.3,
                 pointRadius: 0,
                 pointHoverRadius: 5,
-                borderWidth: 3,
+                borderWidth: widthBase,
                 fill: false,
             },
             {
@@ -521,7 +538,7 @@ al escenario base.
                 tension: 0.3,
                 pointRadius: 0,
                 pointHoverRadius: 5,
-                borderWidth: 2,
+                borderWidth: widthAggressive,
                 fill: false,
             },
             {

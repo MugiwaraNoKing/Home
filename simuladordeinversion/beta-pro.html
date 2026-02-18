@@ -520,7 +520,26 @@ al escenario base.
 
     window.proChartInstance = new Chart(ctx, {
         type: 'line',
+
+        plugins: [{
+            id: 'glowEffect',
+            afterDatasetsDraw(chart) {
+
+                if (selectedScenario === "conservative") {
+                    applyGlow(chart, 0, "rgba(180,180,180,0.6)");
+                }
+                else if (selectedScenario === "base" || selectedScenario === "custom") {
+                    applyGlow(chart, 1, "rgba(212,175,55,0.7)");
+                }
+                else if (selectedScenario === "aggressive") {
+                    applyGlow(chart, 2, "rgba(80,200,120,0.7)");
+                }
+
+            }
+        }],
+
         data: {
+
             labels: baseData.map(d => "Año " + d.year),
             datasets: [
             {

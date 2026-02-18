@@ -404,6 +404,8 @@ function calculateProSimulation() {
                 tension: 0.3,
                 pointRadius: 0,
                 pointHoverRadius: 5,
+                borderWidth: 2,
+                fill: false,
             },
             {
                 label: "Base (8%)",
@@ -412,6 +414,8 @@ function calculateProSimulation() {
                 tension: 0.3,
                 pointRadius: 0,
                 pointHoverRadius: 5,
+                borderWidth: 3,
+                fill: false,
             },
             {
                 label: "Agresivo (12%)",
@@ -420,31 +424,37 @@ function calculateProSimulation() {
                 tension: 0.3,
                 pointRadius: 0,
                 pointHoverRadius: 5,
+                borderWidth: 2,
+                fill: false,
             },
             {
                 label: "Total aportado",
                 data: investedData.map(d => d.value),
                 borderColor: "rgba(180,180,180,0.6)",
-                borderDash: [6,6],
                 tension: 0.3,
                 pointRadius: 0,
                 pointHoverRadius: 5,
+                borderWidth: 2,
+                borderDash: [6,6],
+                fill: false,
             }
-
         ]
-
-        },
+    },
         options: {
-    responsive: true,
+        responsive: true,
     interaction: {
         mode: 'index',
         intersect: false
+    },
+    animation: {
+        duration: 1200,
+        easing: 'easeOutQuart'
     },
     plugins: {
         legend: {
             labels: { color: "white" }
         },
-        tooltip: {
+     tooltip: {
             mode: 'index',
             intersect: false,
             backgroundColor: "#111",
@@ -453,6 +463,9 @@ function calculateProSimulation() {
             borderColor: "rgba(212,175,55,0.5)",
             borderWidth: 1,
             callbacks: {
+                title: function(context) {
+                    return "Año " + context[0].label;
+                },
                 label: function(context) {
                     return context.dataset.label + ": " +
                         context.parsed.y.toLocaleString("es-ES", {

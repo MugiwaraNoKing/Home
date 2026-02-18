@@ -137,6 +137,22 @@ body {
     font-weight: 600;
 }
 
+.control select {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 12px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+    transition: border 0.2s ease, background 0.2s ease;
+}
+
+.control select:focus {
+    border: 1px solid rgba(212,175,55,0.6);
+    background: rgba(255,255,255,0.06);
+}
+
 </style>
 </head>
 
@@ -161,6 +177,15 @@ body {
         </h2>
 
         <div class="pro-controls">
+            <div class="control">
+            <label>Perfil de escenario</label>
+            <select id="pro-scenario">
+                <option value="custom">Personalizado</option>
+                <option value="conservative">Conservador (4%)</option>
+                <option value="base" selected>Base (8%)</option>
+                <option value="aggressive">Agresivo (12%)</option>
+            </select>
+        </div>
 
             <div class="control">
                 <label>Aportación mensual (€)</label>
@@ -359,6 +384,30 @@ function calculateProSimulation() {
 }
 
 document.getElementById("pro-calculate").addEventListener("click", calculateProSimulation);
+
+document.getElementById("pro-scenario").addEventListener("change", function() {
+
+    const rateInput = document.getElementById("pro-rate");
+
+    switch(this.value) {
+        case "conservative":
+            rateInput.value = 4;
+            break;
+        case "base":
+            rateInput.value = 8;
+            break;
+        case "aggressive":
+            rateInput.value = 12;
+            break;
+        case "custom":
+            // No cambiamos nada
+            break;
+    }
+});
+    
+document.getElementById("pro-rate").addEventListener("input", function() {
+    document.getElementById("pro-scenario").value = "custom";
+});
 
 </script>
 

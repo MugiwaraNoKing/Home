@@ -287,6 +287,26 @@ function generateScenarioData(monthly, years, initial, annualRate, inflation) {
     return data;
 }
 
+function generateInvestedData(monthly, years, initial) {
+
+    let invested = initial;
+    let data = [];
+
+    for (let year = 1; year <= years; year++) {
+
+        for (let m = 0; m < 12; m++) {
+            invested += monthly;
+        }
+
+        data.push({
+            year: year,
+            value: invested
+        });
+    }
+
+    return data;
+}
+
 function calculateProSimulation() {
 
     const monthly = parseFloat(document.getElementById("pro-monthly").value) || 0;
@@ -297,6 +317,7 @@ function calculateProSimulation() {
     const conservativeData = generateScenarioData(monthly, years, initial, 0.04, inflation);
     const baseData = generateScenarioData(monthly, years, initial, 0.08, inflation);
     const aggressiveData = generateScenarioData(monthly, years, initial, 0.12, inflation);
+    const investedData = generateInvestedData(monthly, years, initial);
 
     const months = years * 12;
     const monthlyRate = rate / 12;
@@ -379,19 +400,35 @@ function calculateProSimulation() {
                 data: conservativeData.map(d => d.value),
                 borderColor: "rgba(120,120,120,0.8)",
                 tension: 0.3
+                pointRadius: 0,
+                pointHoverRadius: 5,
             },
             {
                 label: "Base (8%)",
                 data: baseData.map(d => d.value),
                 borderColor: "rgba(212,175,55,1)",
                 tension: 0.3
+                pointRadius: 0,
+                pointHoverRadius: 5,
             },
             {
                 label: "Agresivo (12%)",
                 data: aggressiveData.map(d => d.value),
                 borderColor: "rgba(80,200,120,0.9)",
                 tension: 0.3
+                pointRadius: 0,
+                pointHoverRadius: 5,
             }
+            {
+                label: "Total aportado",
+                data: investedData.map(d => d.value),
+                borderColor: "rgba(180,180,180,0.6)",
+                borderDash: [6,6],
+                tension: 0.3
+                pointRadius: 0,
+                pointHoverRadius: 5,
+            }
+
         ]
 
         },
@@ -399,11 +436,31 @@ function calculateProSimulation() {
             responsive: true,
             plugins: {
                 legend: {
-                    labels: {
-                        color: "white"
+                    labels: { color: "white" }
+                   },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: "#111",
+                    titleColor: "#fff",
+                    bodyColor: "#fff",
+                    borderColor: "rgba(212,175,55,0.5)",
+                    borderWidth: 1,
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ": " +
+                                context.parsed.y.toLocaleString("es-ES", {
+                                    minimumFractionDigits: 2
+                                }) + " €";
+                        }
                     }
                 }
             },
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+
             scales: {
                 x: {
                     ticks: { color: "rgba(255,255,255,0.6)" },

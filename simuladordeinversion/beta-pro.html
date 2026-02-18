@@ -470,6 +470,18 @@ function calculateProSimulation() {
     }
 
     const ctx = document.getElementById('proChart').getContext('2d');
+    
+    function applyGlow(chart, datasetIndex, color) {
+        const datasetMeta = chart.getDatasetMeta(datasetIndex);
+        const ctx = chart.ctx;
+
+        ctx.save();
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 15;
+        ctx.lineWidth = chart.data.datasets[datasetIndex].borderWidth;
+        datasetMeta.dataset.draw(ctx);
+        ctx.restore();
+    }
 
     if (window.proChartInstance) {
         window.proChartInstance.destroy();

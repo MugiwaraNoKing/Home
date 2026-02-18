@@ -193,12 +193,16 @@ body {
         <button id="pro-calculate">Calcular simulación</button>
         </div>
 
-</section>
+    </section>
 
     <section class="pro-section">
-        <div class="section-placeholder">
-            BLOQUE 2 — Gráfica multi-escenario
-        </div>
+
+        <h2 style="margin-bottom: 25px; font-size: 20px; font-weight: 500;">
+            Evolución del capital
+        </h2>
+
+        <canvas id="proChart" height="100"></canvas>
+
     </section>
 
     <section class="pro-section">
@@ -221,6 +225,8 @@ body {
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
 
 function calculateProSimulation() {
@@ -235,9 +241,24 @@ function calculateProSimulation() {
     const monthlyRate = rate / 12;
 
     let total = initial;
+    let yearlyData = [];
+    let investedSoFar = initial;
 
-    for (let i = 0; i < months; i++) {
-        total = total * (1 + monthlyRate) + monthly;
+    for (let year = 1; year <= years; year++) {
+
+        for (let m = 0; m < 12; m++) {
+            total = total * (1 + monthlyRate) + monthly;
+            investedSoFar += monthly;
+        }
+
+        const realAdjusted = total / Math.pow(1 + inflation, year);
+
+        yearlyData.push({
+            year: year,
+            nominal: total,
+            real: realAdjusted,
+            invested: investedSoFar
+        });
     }
 
     const totalContributions = (monthly * months) + initial;
@@ -284,6 +305,61 @@ function calculateProSimulation() {
 }
 
 document.getElementById("pro-calculate").addEventListener("click", calculateProSimulation);
+
+const ctx = document.getElementById('proChart').getContext('2d');
+
+if (window.proChartInstance) {
+    window.proChartInstance.destroy();
+}
+
+window.proChartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: yearlyData.map(d => "Año " + d.year),
+        datasets: [
+            {
+                label: "Capital nominal",
+                data: yearlyData.map(d => d.nominal),
+                borderColor: "rgba(212,175,55,1)",
+                backgroundColor: "rgba(212,175,55,0.1)",
+                tension: 0.3
+            },
+            {
+                label: "Capital real",
+                data: yearlyData.map(d => d.real),
+                borderColor: "rgba(255,255,255,0.7)",
+                tension: 0.3
+            },
+            {
+                label: "Total aportado",
+                data: yearlyData.map(d => d.invested),
+                borderColor: "rgba(100,100,100,0.6)",
+                borderDash: [5,5],
+                tension: 0.3
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                labels: {
+                    color: "white"
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: { color: "rgba(255,255,255,0.6)" },
+                grid: { color: "rgba(255,255,255,0.05)" }
+            },
+            y: {
+                ticks: { color: "rgba(255,255,255,0.6)" },
+                grid: { color: "rgba(255,255,255,0.05)" }
+            }
+        }
+    }
+});
 
 </script>
 

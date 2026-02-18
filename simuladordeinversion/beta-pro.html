@@ -471,8 +471,11 @@ function calculateProSimulation() {
             ticks: { color: "rgba(255,255,255,0.6)" },
             grid: { color: "rgba(255,255,255,0.05)" }
         }
+    }
+    }     
     });
 }
+
 
 document.getElementById("pro-calculate").addEventListener("click", calculateProSimulation);
 
@@ -494,7 +497,7 @@ document.getElementById("pro-scenario").addEventListener("change", function() {
             // No cambiamos nada
             break;
     }
-});
+})
     
 document.getElementById("pro-rate").addEventListener("input", function() {
     document.getElementById("pro-scenario").value = "custom";

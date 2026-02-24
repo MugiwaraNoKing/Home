@@ -10,7 +10,7 @@
 <style>
 
 /* RESET */
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: inherit; }
 
 /* FONDO */
 body {
@@ -363,15 +363,6 @@ button.btn:active {
         color: rgba(255,255,255,0.35);
         letter-spacing: 0.3px;
     }
-
-    .pro-inline {
-           font-size: 11px;
-        font-weight: 500;
-        color: rgba(212,175,55,0.65);
-        margin-left: 6px;
-        letter-spacing: 0.4px;
-    }
-
 
 /* GRAFICA */
 .chart-container {
@@ -932,17 +923,21 @@ chart = new Chart(ctx, {
 }
 
     const explanation = `
-        Si inviertes <strong>${monthly.toLocaleString("es-ES")}€ al mes</strong> durante <strong>${years} años</strong>, podrías convertirlo en aproximadamente <span>${finalCapital.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span>.
+        Si inviertes <strong>${monthly.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}€ al mes</strong> durante <strong>${years} años</strong>, podrías acumular aproximadamente <span>${finalCapital.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span>.
 
         Habrás aportado <strong>${totalInvested.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</strong>, pero <span>${interestEarned.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span> vendrán del crecimiento de tu dinero con el tiempo.
 
         Esto es el efecto del interés compuesto: tu dinero empieza a trabajar por ti.
         `;
 
-        const comparison = `
+    const lateScenario = finalCapital * 0.7;
+    
+    const comparison = `
         <br><br>
-        Si retrasas esta inversión unos años, el resultado puede ser significativamente menor. 
-        <span>Empezar antes marca una gran diferencia.</span>
+        Si retrasas esta inversión unos años, podrías terminar con alrededor de 
+    <span>${lateScenario.toLocaleString("es-ES", {style:"currency", currency:"EUR"})}</span>.
+
+    <span>Empezar antes marca una gran diferencia.</span>
     `;
 
 document.getElementById("resultExplanation").innerHTML = explanation + comparison;

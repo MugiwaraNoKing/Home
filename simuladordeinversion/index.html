@@ -485,6 +485,35 @@ canvas {
             color: #ffffff;
             font-weight: 600;
         }
+/* BLOQUE EXPLICATIVO */
+.result-explanation {
+    margin-top: 30px;
+    padding: 22px 26px;
+    border-radius: 12px;
+    background: linear-gradient(145deg, #13211c, #0e1a16);
+    border: 1px solid rgba(212,175,55,0.25);
+    font-size: 15px;
+    line-height: 1.6;
+    color: #d6d6d6;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.5s ease;
+}
+
+.results.visible .result-explanation {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.35s;
+}
+
+.result-explanation strong {
+    color: #ffffff;
+}
+
+.result-explanation span {
+    color: #d4af37;
+    font-weight: 500;
+}
     
 /* MICROCOPY */
 .microcopy {
@@ -624,7 +653,11 @@ canvas {
         <div class="chart-container">
             <canvas id="chart"></canvas>
         </div>
-
+        
+        <div class="result-explanation" id="resultExplanation">
+            
+        </div>
+        
         <div class="microcopy">
         <p>
             Proyección basada en rendimientos históricos medios del mercado.
@@ -640,6 +673,9 @@ canvas {
             <a href="simuladordeinversion/pro.html" class="pro-title-link">
                 Fynantium PRO — Acceso completo al laboratorio
             </a>
+        </p>
+        <p>
+        ¿Y si pudieras comparar distintos escenarios o ajustar la inflación? 
         </p>
         <p>
         Simulación por escenarios, análisis ajustado por inflación y proyecciones avanzadas estarán disponibles próximamente.
@@ -777,8 +813,9 @@ function calculate() {
     for (let i = 0; i < months; i++) {
         balance = balance * (1 + rate/12) + monthly;
         if (i % 12 === 0) {
+            const year = i / 12;
             data.push(balance);
-            investedData.push(monthly * i);
+            investedData.push(monthly * 12 * year);
         }
 
     }
@@ -796,7 +833,7 @@ function calculate() {
     const ctx = document.getElementById("chart").getContext("2d");
 
     if (chart) chart.destroy();
-
+    
 chart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -915,6 +952,25 @@ chart = new Chart(ctx, {
     requestAnimationFrame(update);
 }
 
+    const explanation = `
+    Si inviertes <strong>${monthly.toLocaleString("es-ES")}€ al mes</strong> durante <strong>${years} años</strong>, podrías acumular aproximadamente <span>${finalCapital.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span>.
+
+    De esa cantidad, habrás aportado <strong>${totalInvested.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</strong>, mientras que <span>${interestEarned.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span> provienen del crecimiento de tu inversión con el tiempo.
+
+    Esto demuestra cómo el tiempo y el interés compuesto pueden hacer crecer tu dinero de forma exponencial.
+    `;
+    const lateStart = finalCapital * 0.65;
+
+        const comparison = `
+        <br><br>
+        Si retrasas esta inversión unos años, el resultado puede ser significativamente menor. 
+        <span>Empezar antes marca una gran diferencia.</span>
+    `;
+
+document.getElementById("resultExplanation").innerHTML += comparison;
+
+document.getElementById("resultExplanation").innerHTML = explanation;
+    
 }
 
     function formatNumber(value) {

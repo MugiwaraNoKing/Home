@@ -651,9 +651,18 @@ canvas {
 
     <div class="pro-block">
         <p>
-            <a href="simuladordeinversion/pro.html" class="pro-title-link">
-                Fynantium PRO — Acceso completo al laboratorio
-            </a>
+            <a href="simuladordeinversion/pro.html" 
+           class="pro-title-link"
+           onclick="event.preventDefault(); 
+                    gtag('event', 'pro_clicked', {
+                      event_category: 'conversion',
+                      event_label: 'Click PRO'
+                    }); 
+                    setTimeout(() => {
+                      window.location.href='simuladordeinversion/pro.html';
+                    }, 150);">
+           Fynantium PRO — Acceso completo al laboratorio
+        </a>
         </p>
         <p>
         ¿Y si pudieras comparar distintos escenarios o ajustar la inflación? 
@@ -915,6 +924,11 @@ chart = new Chart(ctx, {
     },
 
     plugins: [verticalLinePlugin, glowPlugin]
+});
+
+  gtag('event', 'result_shown', {
+  event_category: 'engagement',
+  event_label: 'Resultado mostrado'
 });
 
     document.getElementById("results").classList.add("visible");

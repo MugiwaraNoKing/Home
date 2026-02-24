@@ -3,6 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Calcula cuánto dinero puedes acumular invirtiendo cada mes. Simulador de inversión a largo plazo con interés compuesto e inflación.">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GLW3B4MTLH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-GLW3B4MTLH');
+</script>
+</head>
 <title>Simulador de Inversión | Fynantium</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -803,6 +814,9 @@ for (let i = 1; i <= months; i++) {
     const ctx = document.getElementById("chart").getContext("2d");
 
     if (chart) chart.destroy();
+
+    let years = parseFloat(document.getElementById("years").value);
+    if (isNaN(years) || years <= 0) years = 1;
     
 chart = new Chart(ctx, {
     type: 'line',
@@ -923,7 +937,7 @@ chart = new Chart(ctx, {
 }
 
     const explanation = `
-        Si inviertes <strong>${monthly.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}€ al mes</strong> durante <strong>${years} años</strong>, podrías acumular aproximadamente <span>${finalCapital.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span>.
+        Si inviertes <strong>${monthly.toLocaleString("es-ES", {style: "currency", currency: "EUR"})} al mes</strong> durante <strong>${years} años</strong>, podrías acumular aproximadamente <span>${finalCapital.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span>.
 
         Habrás aportado <strong>${totalInvested.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</strong>, pero <span>${interestEarned.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span> vendrán del crecimiento de tu dinero con el tiempo.
 

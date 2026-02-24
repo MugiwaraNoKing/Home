@@ -393,7 +393,8 @@ canvas {
     transform: translateY(0);
     transition-delay: 0.25s;
 }
-     #chartjs-tooltip {
+    
+ #chartjs-tooltip {
             position: absolute;
             background: rgba(16, 24, 20, 0.96);
             border: 1px solid rgba(212,175,55,0.25);
@@ -431,31 +432,6 @@ canvas {
             font-size: 16px;
             font-weight: 600;
             color: #d4af37;
-        }
-    
- #chartjs-tooltip {
-            position: absolute;
-            background: rgba(16, 24, 20, 0.96);
-            border: 1px solid rgba(212,175,55,0.25);
-            border-radius: 12px;
-            padding: 14px 16px;
-            pointer-events: none;
-            backdrop-filter: blur(6px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.45);
-
-            opacity: 0;
-            transform: translateY(6px);
-            transition: 
-                opacity 0.18s ease-out,
-                transform 0.18s ease-out;
-        }
-
-        .tooltip-year {
-            font-weight: 600;
-            font-size: 13px;
-            margin-bottom: 8px;
-            color: #d4af37;
-            letter-spacing: 0.3px;
         }
 
         .tooltip-row {
@@ -798,9 +774,12 @@ function calculate() {
     btn.style.pointerEvents = "auto";
     }, 600);
 
-    const monthly = parseFloat(
+   let monthly = parseFloat(
     document.getElementById("monthly").value.replace(/\./g, "")
-);
+    );
+
+    if (isNaN(monthly) || monthly <= 0) monthly = 0;
+        
     const years = parseFloat(document.getElementById("years").value);
     const rate = 0.08;
     const inflation = 0.02;
@@ -810,15 +789,15 @@ function calculate() {
     let data = [];
     let investedData = [];
 
-    for (let i = 0; i < months; i++) {
-        balance = balance * (1 + rate/12) + monthly;
-        if (i % 12 === 0) {
-            const year = i / 12;
-            data.push(balance);
-            investedData.push(monthly * 12 * year);
-        }
+for (let i = 1; i <= months; i++) {
+    balance = balance * (1 + rate/12) + monthly;
 
+    if (i % 12 === 0) {
+        const year = i / 12;
+        data.push(balance);
+        investedData.push(monthly * 12 * year);
     }
+}
 
     const totalInvested = monthly * months;
     const finalCapital = balance;
@@ -837,7 +816,7 @@ function calculate() {
 chart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: Array.from({length: years + 1}, (_, i) => i),
+        labels: Array.from({length: years}, (_, i) => i + 1),
         datasets: [
         {
             label: "Capital acumulado",
@@ -953,13 +932,12 @@ chart = new Chart(ctx, {
 }
 
     const explanation = `
-    Si inviertes <strong>${monthly.toLocaleString("es-ES")}€ al mes</strong> durante <strong>${years} años</strong>, podrías acumular aproximadamente <span>${finalCapital.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span>.
+        Si inviertes <strong>${monthly.toLocaleString("es-ES")}€ al mes</strong> durante <strong>${years} años</strong>, podrías convertirlo en aproximadamente <span>${finalCapital.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span>.
 
-    De esa cantidad, habrás aportado <strong>${totalInvested.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</strong>, mientras que <span>${interestEarned.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span> provienen del crecimiento de tu inversión con el tiempo.
+        Habrás aportado <strong>${totalInvested.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</strong>, pero <span>${interestEarned.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span> vendrán del crecimiento de tu dinero con el tiempo.
 
-    Esto demuestra cómo el tiempo y el interés compuesto pueden hacer crecer tu dinero de forma exponencial.
-    `;
-    const lateStart = finalCapital * 0.65;
+        Esto es el efecto del interés compuesto: tu dinero empieza a trabajar por ti.
+        `;
 
         const comparison = `
         <br><br>
@@ -967,9 +945,7 @@ chart = new Chart(ctx, {
         <span>Empezar antes marca una gran diferencia.</span>
     `;
 
-document.getElementById("resultExplanation").innerHTML += comparison;
-
-document.getElementById("resultExplanation").innerHTML = explanation;
+document.getElementById("resultExplanation").innerHTML = explanation + comparison;
     
 }
 

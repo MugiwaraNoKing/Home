@@ -770,6 +770,10 @@ canvas {
 let chart;
 
 function calculate() {
+  gtag('event', 'calculate_clicked', {
+  event_category: 'engagement',
+  event_label: 'Simulador Free'
+});
     const btn = document.querySelector(".btn");
     btn.style.opacity = "0.8";
     btn.style.pointerEvents = "none";

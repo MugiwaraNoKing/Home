@@ -715,7 +715,7 @@
           return; 
         }
         
-        const year = Math.floor((index + 1) / 12);
+        const year = isMobile ? index + 1 : Math.floor((index + 1) / 12);
         
         const capitalAcumulado = chart.data.datasets[0].data[index];
         const capitalAportado = chart.data.datasets[1].data[index];
@@ -895,8 +895,8 @@
        if (chart) chart.destroy(); 
        if (isNaN(yearsValid) || yearsValid <= 0) yearsValid = 1;
        yearlyIndexes = isMobile
-      ? Array.from({length: yearsValid}, (_, i) => i)
-      : Array.from({length: yearsValid}, (_, i) => (i+1)*12 - 1);
+        ? Array.from({length: yearsValid}, (_, i) => i) // cada índice de año
+        : Array.from({length: yearsValid}, (_, i) => (i+1)*12 - 1); // cada mes final de año
        
        chart = new Chart(ctx, {
          type: 'line', 
@@ -916,12 +916,8 @@
                   fill: false, 
                   tension: 0.5, 
                   cubicInterpolationMode: 'monotone', 
-                  pointRadius: (ctx) => {
-                    return yearlyIndexes.includes(ctx.dataIndex) ? 3 : 0;
-                    },
-                    pointHoverRadius: (ctx) => {
-                      return yearlyIndexes.includes(ctx.dataIndex) ? 6 : 0;
-                    },
+                  pointRadius: (ctx) => yearlyIndexes.includes(ctx.dataIndex) ? 3 : 0,
+                  pointHoverRadius: (ctx) => yearlyIndexes.includes(ctx.dataIndex) ? 6 : 0,
                   pointBackgroundColor: "#d4af37",
                   pointBorderWidth: 0,
                   pointHitRadius: 12,

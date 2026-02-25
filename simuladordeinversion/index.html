@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta name="google-site-verification" content="myBcnOWByarVwV4a5_MfZoFnzrMgCgu0cjO9gy80CN0" />
@@ -792,6 +792,29 @@ function calculate() {
   event_category: 'engagement',
   event_label: 'Simulador Free'
 });
+
+    function animateValue(elementId, start, end, duration) {
+        const element = document.getElementById(elementId);
+        const range = end - start;
+        const startTime = performance.now();
+
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const value = start + range * progress;
+
+            element.innerText = value.toLocaleString("es-ES", {
+                style: "currency",
+                currency: "EUR"
+            });
+
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            }
+        }
+
+        requestAnimationFrame(update);
+    }
     const btn = document.querySelector(".btn");
     btn.style.opacity = "0.8";
     btn.style.pointerEvents = "none";
@@ -913,7 +936,7 @@ chart = new Chart(ctx, {
                 },
                 maxTicksLimit: window.innerWidth < 768 ? 5 : 10
             }
-        }
+        },
             y: {
                 grid: {
                     color: "rgba(255,255,255,0.04)",
@@ -945,29 +968,6 @@ chart = new Chart(ctx, {
 
     document.getElementById("results").classList.add("visible");
     document.querySelector(".pro-block").classList.add("visible");
-    
-    function animateValue(elementId, start, end, duration) {
-    const element = document.getElementById(elementId);
-    const range = end - start;
-    const startTime = performance.now();
-
-    function update(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const value = start + range * progress;
-
-        element.innerText = value.toLocaleString("es-ES", {
-            style: "currency",
-            currency: "EUR"
-        });
-
-        if (progress < 1) {
-            requestAnimationFrame(update);
-        }
-    }
-
-    requestAnimationFrame(update);
-}
 
     const explanation = `
         Si inviertes <strong>${monthly.toLocaleString("es-ES", {style: "currency", currency: "EUR"})} al mes</strong> durante <strong>${years} años</strong>, podrías acumular aproximadamente <span>${finalCapital.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span>.

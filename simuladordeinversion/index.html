@@ -854,7 +854,7 @@
        const years = parseFloat(document.getElementById("years").value); 
        const rate = 0.08; 
        const inflation = 0.02; 
-       const months = years * 12; 
+       const months = yearsValid * 12;
        let balance = 0; 
        let data = []; 
        let investedData = []; 
@@ -877,7 +877,7 @@
        if (chart) chart.destroy(); 
        let yearsValid = parseFloat(document.getElementById("years").value);
        if (isNaN(yearsValid) || yearsValid <= 0) yearsValid = 1;
-       yearlyIndexes = Array.from({length: years}, (_, i) => (i+1)*12 - 1);
+       yearlyIndexes = Array.from({length: yearsValid}, (_, i) => (i+1)*12 - 1);
        
        chart = new Chart(ctx, {
          type: 'line', 

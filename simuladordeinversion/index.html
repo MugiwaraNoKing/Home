@@ -683,63 +683,64 @@ button.btn:active {
 <script>
 
     const externalTooltipHandler = (context) => {
-        const {chart, tooltip} = context;
-        let tooltipEl = document.getElementById('chartjs-tooltip');
+    const {chart, tooltip} = context;
+    let tooltipEl = document.getElementById('chartjs-tooltip');
 
-        if (!tooltipEl) {
-            tooltipEl = document.createElement('div');
-            tooltipEl.id = 'chartjs-tooltip';
-            tooltipEl.innerHTML = "<div class='tooltip-content'></div>";
-            document.body.appendChild(tooltipEl);
-        }
+    if (!tooltipEl) {
+        tooltipEl = document.createElement('div');
+        tooltipEl.id = 'chartjs-tooltip';
+        tooltipEl.innerHTML = "<div class='tooltip-content'></div>";
+        document.body.appendChild(tooltipEl);
+    }
 
-       if (tooltip.opacity === 0) {
-            tooltipEl.style.opacity = 0;
-            tooltipEl.style.transform = "translateY(6px)";
-            return;
-        }
+    if (tooltip.opacity === 0) {
+        tooltipEl.style.opacity = 0;
+        tooltipEl.style.transform = "translateY(6px)";
+        return;
+    }
 
-        const year = tooltip.dataPoints[0].label;
+    const index = tooltip.dataPoints[0].dataIndex;
 
-        const capitalAcumulado = tooltip.dataPoints.find(dp => dp.datasetIndex === 0)?.raw || 0;
-        const capitalAportado = tooltip.dataPoints.find(dp => dp.datasetIndex === 1)?.raw || 0;
-        const interesGenerado = capitalAcumulado - capitalAportado;
+    // Mostrar solo años completos
+    if (!yearlyIndexes.includes(index)) {
+        tooltipEl.style.opacity = 0;
+        return;
+    }
 
-        const formatCurrency = (val) => {
-            return val.toLocaleString("es-ES", {
-                style: "currency",
-                currency: "EUR"
-            });
-        };
+    const year = Math.floor((index + 1) / 12);
 
-        tooltipEl.querySelector('.tooltip-content').innerHTML = `
-            <div class="tooltip-year">Año ${year}</div>
-            <div class="tooltip-row">
-                <span>Capital acumulado</span>
-                <span>${formatCurrency(capitalAcumulado)}</span>
-            </div>
-            <div class="tooltip-row">
-                <span>Capital aportado</span>
-                <span>${formatCurrency(capitalAportado)}</span>
-            </div>
-            <div class="tooltip-divider"></div>
-            <div class="tooltip-row highlight">
-                <span>Interés generado</span>
-                <span>${formatCurrency(interesGenerado)}</span>
-            </div>
-        `;
-           
-        const position = chart.canvas.getBoundingClientRect();
+    const capitalAcumulado = chart.data.datasets[0].data[index];
+    const capitalAportado = chart.data.datasets[1].data[index];
+    const interesGenerado = capitalAcumulado - capitalAportado;
 
-        tooltipEl.style.opacity = 1;
-        tooltipEl.style.transform = "translateY(0px)";
-        const isMobile = window.innerWidth < 768;
+    const formatCurrency = (val) => val.toLocaleString("es-ES", {style: "currency", currency: "EUR"});
 
+    tooltipEl.querySelector('.tooltip-content').innerHTML = `
+        <div class="tooltip-year">Año ${year}</div>
+        <div class="tooltip-row">
+            <span>Capital acumulado</span>
+            <span>${formatCurrency(capitalAcumulado)}</span>
+        </div>
+        <div class="tooltip-row">
+            <span>Capital aportado</span>
+            <span>${formatCurrency(capitalAportado)}</span>
+        </div>
+        <div class="tooltip-divider"></div>
+        <div class="tooltip-row highlight">
+            <span>Interés generado</span>
+            <span>${formatCurrency(interesGenerado)}</span>
+        </div>
+    `;
+
+    const position = chart.canvas.getBoundingClientRect();
+    tooltipEl.style.opacity = 1;
+    tooltipEl.style.transform = "translateY(0px)";
+    const isMobile = window.innerWidth < 768;
     tooltipEl.style.left = isMobile
         ? position.left + window.pageXOffset + tooltip.caretX - 60 + 'px'
         : position.left + window.pageXOffset + tooltip.caretX + 40 + 'px';
-        tooltipEl.style.top = position.top + window.pageYOffset + tooltip.caretY - 8 + 'px';
-    };
+    tooltipEl.style.top = position.top + window.pageYOffset + tooltip.caretY - 8 + 'px';
+};
     
     const verticalLinePlugin = {
         id: 'verticalLine',
@@ -862,7 +863,9 @@ for (let i = 1; i <= months; i++) {
 
     let yearsValid = parseFloat(document.getElementById("years").value);
   if (isNaN(yearsValid) || yearsValid <= 0) yearsValid = 1;
-    
+
+const yearlyIndexes = Array.from({length: years}, (_, i) => (i+1)*12 - 1);
+ 
 chart = new Chart(ctx, {
     type: 'line',
     data: {

@@ -977,27 +977,36 @@
         });
       
       document.getElementById("results").classList.add("visible");
-    }
-       
-       gtag('event', 'result_shown', { 
-         event_category: 'engagement',
-         event_label: 'Resultado mostrado'
-       }); 
-       
-       document.getElementById("results").classList.add("visible");
-       document.querySelector(".pro-block").classList.add("visible");
-       
-        const explanation = Si inviertes <strong>${monthly.toLocaleString("es-ES", {style: "currency", currency: "EUR"})} al mes</strong>durante <strong>${years} años</strong>, podrías acumular aproximadamente <span>${finalCapital.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span>. Habrás aportado <strong>${totalInvested.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</strong>, pero <span>${interestEarned.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span> vendrán del crecimiento de tu dinero con el tiempo. Esto es el efecto del interés compuesto: tu dinero empieza a trabajar por ti. ; 
-       const lateScenario = finalCapital * 0.7;
-       const comparison = 
-         <br><br> 
-         Si retrasas esta inversión unos años, podrías terminar con alrededor de 
-         <span>${lateScenario.toLocaleString("es-ES", {style:"currency", currency:"EUR"})}</span>.
-         <span>Empezar antes marca una gran diferencia.</span>
-         ; 
-       
-       document.getElementById("resultExplanation").innerHTML = explanation + comparison;
-      }
+      document.querySelector(".pro-block").classList.add("visible");
+
+      gtag('event', 'result_shown', { 
+        event_category: 'engagement',
+        event_label: 'Resultado mostrado'
+      }); 
+
+const explanation = `
+Si inviertes <strong>${monthly.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</strong> al mes 
+durante <strong>${yearsValid} años</strong>, podrías acumular aproximadamente 
+<span>${finalCapital.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span>. 
+
+Habrás aportado <strong>${totalInvested.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</strong>, 
+pero <span>${interestEarned.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span> 
+vendrán del crecimiento de tu dinero con el tiempo. 
+
+Esto es el efecto del interés compuesto: tu dinero empieza a trabajar por ti.
+`;
+
+const lateScenario = finalCapital * 0.7;
+
+const comparison = `
+<br><br>
+Si retrasas esta inversión unos años, podrías terminar con alrededor de 
+<span>${lateScenario.toLocaleString("es-ES", {style:"currency", currency:"EUR"})}</span>.
+<span>Empezar antes marca una gran diferencia.</span>
+`;
+
+document.getElementById("resultExplanation").innerHTML = explanation + comparison;
+}
       
       function formatNumber(value) {
         return value.replace(/\D/g, "") 

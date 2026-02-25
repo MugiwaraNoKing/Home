@@ -683,7 +683,7 @@ button.btn:active {
 <script>
 
     const externalTooltipHandler = (context) => {
-    const {chart, tooltip} = context;
+    const { chart, tooltip } = context;
     let tooltipEl = document.getElementById('chartjs-tooltip');
 
     if (!tooltipEl) {
@@ -713,7 +713,7 @@ button.btn:active {
     const capitalAportado = chart.data.datasets[1].data[index];
     const interesGenerado = capitalAcumulado - capitalAportado;
 
-    const formatCurrency = (val) => val.toLocaleString("es-ES", {style: "currency", currency: "EUR"});
+    const formatCurrency = (val) => val.toLocaleString("es-ES", { style: "currency", currency: "EUR" });
 
     tooltipEl.querySelector('.tooltip-content').innerHTML = `
         <div class="tooltip-year">Año ${year}</div>
@@ -732,14 +732,31 @@ button.btn:active {
         </div>
     `;
 
-    const position = chart.canvas.getBoundingClientRect();
+    const canvasPosition = chart.canvas.getBoundingClientRect();
+    const tooltipWidth = tooltipEl.offsetWidth;
+    const tooltipHeight = tooltipEl.offsetHeight;
+
+    let left = canvasPosition.left + window.pageXOffset + tooltip.caretX + 20;
+    let top = canvasPosition.top + window.pageYOffset + tooltip.caretY - tooltipHeight / 2;
+
+    // Optimización móvil: ajustar posición si se sale de la pantalla
+    const pageWidth = document.documentElement.clientWidth;
+    const pageHeight = document.documentElement.clientHeight;
+
+    // Evitar que se salga a la derecha
+    if (left + tooltipWidth + 10 > window.pageXOffset + pageWidth) {
+        left = canvasPosition.left + window.pageXOffset + tooltip.caretX - tooltipWidth - 20;
+    }
+
+    // Evitar que se salga por arriba o abajo
+    if (top < window.pageYOffset + 10) top = window.pageYOffset + 10;
+    if (top + tooltipHeight > window.pageYOffset + pageHeight - 10) top = window.pageYOffset + pageHeight - tooltipHeight - 10;
+
+    tooltipEl.style.left = left + "px";
+    tooltipEl.style.top = top + "px";
+
     tooltipEl.style.opacity = 1;
     tooltipEl.style.transform = "translateY(0px)";
-    const isMobile = window.innerWidth < 768;
-    tooltipEl.style.left = isMobile
-        ? position.left + window.pageXOffset + tooltip.caretX - 60 + 'px'
-        : position.left + window.pageXOffset + tooltip.caretX + 40 + 'px';
-    tooltipEl.style.top = position.top + window.pageYOffset + tooltip.caretY - 8 + 'px';
 };
     
     const verticalLinePlugin = {

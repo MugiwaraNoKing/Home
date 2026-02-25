@@ -809,6 +809,7 @@
       
       let chart; 
       let yearlyIndexes = [];
+      let isMobile = false;
       
       function calculate() 
       
@@ -861,7 +862,7 @@
       let data = [];
       let investedData = [];
 
-      const isMobile = window.innerWidth < 768;
+      isMobile = window.innerWidth < 768;
 
       if (isMobile) {
       // SOLO datos anuales

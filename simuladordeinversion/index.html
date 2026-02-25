@@ -842,11 +842,8 @@ function calculate() {
 for (let i = 1; i <= months; i++) {
     balance = balance * (1 + rate/12) + monthly;
 
-    if (i % 12 === 0) {
-        const year = i / 12;
-        data.push(balance);
-        investedData.push(monthly * 12 * year);
-    }
+    data.push(balance);
+    investedData.push(monthly * i);
 }
 
     const totalInvested = monthly * months;
@@ -869,7 +866,10 @@ for (let i = 1; i <= months; i++) {
 chart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: Array.from({length: yearsValid}, (_, i) => i + 1),
+        labels: Array.from({length: months}, (_, i) => {
+        if ((i+1) % 12 === 0) return i/12 + 1; // solo mostrar año completo
+        return ""; // vacío para otros meses
+    }),
         datasets: [
         {
             label: "Capital acumulado",
@@ -877,7 +877,7 @@ chart = new Chart(ctx, {
             borderColor: "#d4af37",
             borderWidth: 2.8,
             fill: false,
-            tension: 0.38,
+            tension: 0.5,
             cubicInterpolationMode: 'monotone',
             pointRadius: 0,
             segment: {

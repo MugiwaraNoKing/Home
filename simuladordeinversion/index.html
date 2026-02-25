@@ -857,14 +857,30 @@
       const rate = 0.08; 
       const inflation = 0.02; 
       const months = yearsValid * 12;
-       let balance = 0; 
-       let data = []; 
-       let investedData = []; 
-       for (let i = 1; i <= months; i++) {
-         balance = balance * (1 + rate/12) + monthly;
-         data.push(balance);
-         investedData.push(monthly * i);
-       } 
+      let balance = 0; 
+      let data = [];
+      let investedData = [];
+
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+      // SOLO datos anuales
+      for (let i = 1; i <= months; i++) {
+        balance = balance * (1 + rate/12) + monthly;
+
+        if (i % 12 === 0) {
+          data.push(balance);
+          investedData.push(monthly * i);
+        }
+      }
+    } else {
+      // Datos mensuales (desktop)
+      for (let i = 1; i <= months; i++) {
+        balance = balance * (1 + rate/12) + monthly;
+        data.push(balance);
+        investedData.push(monthly * i);
+      }
+    }
        const totalInvested = monthly * months;
        const finalCapital = balance;
        const realCapital = finalCapital / Math.pow(1 + inflation, yearsValid);
@@ -878,12 +894,19 @@
        const ctx = document.getElementById("chart").getContext("2d"); 
        if (chart) chart.destroy(); 
        if (isNaN(yearsValid) || yearsValid <= 0) yearsValid = 1;
-       yearlyIndexes = Array.from({length: yearsValid}, (_, i) => (i+1)*12 - 1);
+       yearlyIndexes = isMobile
+      ? Array.from({length: yearsValid}, (_, i) => i)
+      : Array.from({length: yearsValid}, (_, i) => (i+1)*12 - 1);
        
        chart = new Chart(ctx, {
          type: 'line', 
          data: {
-           labels: Array.from({length: months}, (_, i) => {
+           labels: isMobile
+          ? Array.from({length: yearsValid}, (_, i) => i + 1)
+          : Array.from({length: months}, (_, i) => {
+              if ((i+1) % 12 === 0) return i/12 + 1;
+              return "";
+            }),
               if ((i+1) % 12 === 0) return i/12 + 1;
               return "";
             }),

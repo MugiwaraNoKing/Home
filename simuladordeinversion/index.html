@@ -851,10 +851,12 @@
        
        if (isNaN(monthly) || monthly <= 0) monthly = 0;
        
-       const years = parseFloat(document.getElementById("years").value); 
-       const rate = 0.08; 
-       const inflation = 0.02; 
-       const months = yearsValid * 12;
+      let yearsValid = parseFloat(document.getElementById("years").value);
+      if (isNaN(yearsValid) || yearsValid <= 0) yearsValid = 1;
+
+      const rate = 0.08; 
+      const inflation = 0.02; 
+      const months = yearsValid * 12;
        let balance = 0; 
        let data = []; 
        let investedData = []; 
@@ -865,7 +867,7 @@
        } 
        const totalInvested = monthly * months;
        const finalCapital = balance;
-       const realCapital = finalCapital / Math.pow(1 + inflation, years);
+       const realCapital = finalCapital / Math.pow(1 + inflation, yearsValid);
        const interestEarned = finalCapital - totalInvested;
        
        animateValue("finalCapital", 0, finalCapital, 900); 
@@ -875,7 +877,6 @@
        
        const ctx = document.getElementById("chart").getContext("2d"); 
        if (chart) chart.destroy(); 
-       let yearsValid = parseFloat(document.getElementById("years").value);
        if (isNaN(yearsValid) || yearsValid <= 0) yearsValid = 1;
        yearlyIndexes = Array.from({length: yearsValid}, (_, i) => (i+1)*12 - 1);
        
@@ -973,10 +974,14 @@
               } 
             } 
           } 
-        },
-        
-         plugins: [verticalLinePlugin, glowPlugin]
-       });
+        }
+      }
+    },
+        plugins: [verticalLinePlugin, glowPlugin]
+      });
+      
+      document.getElementById("results").classList.add("visible");
+    }
        
        gtag('event', 'result_shown', { 
          event_category: 'engagement',

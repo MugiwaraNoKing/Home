@@ -896,7 +896,14 @@
                   fill: false, 
                   tension: 0.5, 
                   cubicInterpolationMode: 'monotone', 
-                  pointRadius: 0, 
+                  pointRadius: (ctx) => {
+                    return yearlyIndexes.includes(ctx.dataIndex) ? 3 : 0;
+                    },
+                    pointHoverRadius: (ctx) => {
+                      return yearlyIndexes.includes(ctx.dataIndex) ? 6 : 0;
+                    },
+                  pointBackgroundColor: "#d4af37",
+                  pointBorderWidth: 0,
                   segment: {
                     borderColor: ctx => {
                       const gradient = ctx.chart.ctx.createLinearGradient(0, 0, ctx.chart.width, 0);

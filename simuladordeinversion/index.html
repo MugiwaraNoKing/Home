@@ -722,21 +722,22 @@
         const interesGenerado = capitalAcumulado - capitalAportado; 
         const formatCurrency = (val) => val.toLocaleString("es-ES", { style: "currency", currency: "EUR" });
         
-        tooltipEl.querySelector('.tooltip-content').innerHTML = 
-        <div class="tooltip-year">Año ${year}</div>
-        <div class="tooltip-row"> 
-          <span>Capital acumulado</span>
-          <span>${formatCurrency(capitalAcumulado)}</span> 
-        </div> 
-        <div class="tooltip-row"> 
-          <span>Capital aportado</span>
-          <span>${formatCurrency(capitalAportado)}</span>
-        </div>
-        <div class="tooltip-divider"></div> 
-        <div class="tooltip-row highlight">
-          <span>Interés generado</span> 
-          <span>${formatCurrency(interesGenerado)}</span>
-        </div> ;
+        tooltipEl.querySelector('.tooltip-content').innerHTML = `
+          <div class="tooltip-year">Año ${year}</div>
+          <div class="tooltip-row"> 
+            <span>Capital acumulado</span>
+            <span>${formatCurrency(capitalAcumulado)}</span> 
+          </div> 
+          <div class="tooltip-row"> 
+            <span>Capital aportado</span>
+            <span>${formatCurrency(capitalAportado)}</span>
+          </div>
+          <div class="tooltip-divider"></div> 
+          <div class="tooltip-row highlight">
+            <span>Interés generado</span> 
+            <span>${formatCurrency(interesGenerado)}</span>
+          </div>
+        `;
         
         const canvasPosition = chart.canvas.getBoundingClientRect();
         const tooltipWidth = tooltipEl.offsetWidth; 

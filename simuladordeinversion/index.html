@@ -944,41 +944,38 @@
               }
             }, 
             scales: {
-              x: {
-                grid: {
-                  color: "rgba(255,255,255,0.04)",
-                  drawBorder: false 
-                }, 
-                ticks: {
-                  color: "rgba(255,255,255,0.5)",
-                  font: {
-                    size: 10 
-                  },
-                  maxTicksLimit: window.innerWidth < 768 ? 5 : 10 
-                }
-              },
-              y: {
-                grid: { 
-                  color: "rgba(255,255,255,0.04)", 
-                  drawBorder: false 
-                },
-                ticks: {
-                  color: "rgba(255,255,255,0.5)",
-                  font: { size: 11 },
-                  callback: function(value) {
-                  return new Intl.NumberFormat('es-ES', {
-                    notation: "compact", 
-                    maximumFractionDigits: 1 
-                  }).format(value) + " €"; 
-                }
-              } 
-            } 
-          } 
-        }
-      }
+              scales: {
+  x: {
+    grid: {
+      color: "rgba(255,255,255,0.04)",
+      drawBorder: false
     },
-        plugins: [verticalLinePlugin, glowPlugin]
-      });
+    ticks: {
+      color: "rgba(255,255,255,0.5)",
+      font: { size: 10 },
+      maxTicksLimit: window.innerWidth < 768 ? 5 : 10
+    }
+  },
+  y: {
+    grid: {
+      color: "rgba(255,255,255,0.04)",
+      drawBorder: false
+    },
+    ticks: {
+      color: "rgba(255,255,255,0.5)",
+      font: { size: 11 },
+      callback: function(value) {
+        return new Intl.NumberFormat('es-ES', {
+          notation: "compact",
+          maximumFractionDigits: 1
+        }).format(value) + " €";
+      }
+    }
+  }
+}
+},
+plugins: [verticalLinePlugin, glowPlugin]
+});
       
       document.getElementById("results").classList.add("visible");
     }

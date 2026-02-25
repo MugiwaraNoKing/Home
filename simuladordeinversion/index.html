@@ -701,19 +701,18 @@ button.btn:active {
 
     const index = tooltip.dataPoints[0].dataIndex;
 
-    // Mostrar solo años completos
     if (!yearlyIndexes.includes(index)) {
         tooltipEl.style.opacity = 0;
         return;
     }
 
     const year = Math.floor((index + 1) / 12);
-
     const capitalAcumulado = chart.data.datasets[0].data[index];
     const capitalAportado = chart.data.datasets[1].data[index];
     const interesGenerado = capitalAcumulado - capitalAportado;
 
-    const formatCurrency = (val) => val.toLocaleString("es-ES", { style: "currency", currency: "EUR" });
+    const formatCurrency = val =>
+        val.toLocaleString("es-ES", { style: "currency", currency: "EUR" });
 
     tooltipEl.querySelector('.tooltip-content').innerHTML = `
         <div class="tooltip-year">Año ${year}</div>
@@ -739,135 +738,103 @@ button.btn:active {
     let left = canvasPosition.left + window.pageXOffset + tooltip.caretX + 20;
     let top = canvasPosition.top + window.pageYOffset + tooltip.caretY - tooltipHeight / 2;
 
-    // Optimización móvil: ajustar posición si se sale de la pantalla
+    // Evitar que se salga de la pantalla
     const pageWidth = document.documentElement.clientWidth;
     const pageHeight = document.documentElement.clientHeight;
-
-    // Evitar que se salga a la derecha
-    if (left + tooltipWidth + 10 > window.pageXOffset + pageWidth) {
+    if (left + tooltipWidth + 10 > window.pageXOffset + pageWidth)
         left = canvasPosition.left + window.pageXOffset + tooltip.caretX - tooltipWidth - 20;
-    }
-
-    // Evitar que se salga por arriba o abajo
     if (top < window.pageYOffset + 10) top = window.pageYOffset + 10;
-    if (top + tooltipHeight > window.pageYOffset + pageHeight - 10) top = window.pageYOffset + pageHeight - tooltipHeight - 10;
+    if (top + tooltipHeight > window.pageYOffset + pageHeight - 10)
+        top = window.pageYOffset + pageHeight - tooltipHeight - 10;
 
     tooltipEl.style.left = left + "px";
     tooltipEl.style.top = top + "px";
-
     tooltipEl.style.opacity = 1;
     tooltipEl.style.transform = "translateY(0px)";
 };
-    
-    const verticalLinePlugin = {
-        id: 'verticalLine',
-        afterDraw: (chart) => {
-            if (chart.tooltip?._active?.length) {
-                const ctx = chart.ctx;
-                const x = chart.tooltip._active[0].element.x;
-                const topY = chart.scales.y.top;
-                const bottomY = chart.scales.y.bottom;
 
-                ctx.save();
-                ctx.beginPath();
-                ctx.moveTo(x, topY);
-                ctx.lineTo(x, bottomY);
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = 'rgba(212,175,55,0.35)';
-                ctx.stroke();
-                ctx.restore();
-            }
-           }
-    };
+// Plugin para línea vertical
+const verticalLinePlugin = {
+    id: 'verticalLine',
+    afterDraw: chart => {
+        if (chart.tooltip?._active?.length) {
+            const ctx = chart.ctx;
+            const x = chart.tooltip._active[0].element.x;
+            const topY = chart.scales.y.top;
+            const bottomY = chart.scales.y.bottom;
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(x, topY);
+            ctx.lineTo(x, bottomY);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = 'rgba(212,175,55,0.35)';
+            ctx.stroke();
+            ctx.restore();
+        }
+    }
+};
 
-    const glowPlugin = {
-            id: 'glow',
-            beforeDatasetDraw(chart, args, options) {
-                const {ctx, data} = chart;
-                ctx.save();
-
-                const dataset = data.datasets[0].data;
-                const maxValue = dataset[dataset.length - 1];
-
-                // Escalado elegante (ajústalo si quieres)
-                const intensity = Math.min(maxValue / 150000, 1); 
-
-                const blur = 8 + (intensity * 14); 
-                const opacity = 0.18 + (intensity * 0.22);
-
-                ctx.shadowColor = `rgba(212,175,55,${opacity})`;
-                ctx.shadowBlur = blur;
-            },
-            afterDatasetDraw(chart) {
-                chart.ctx.restore();
-            }
-        };
+// Plugin glow dorado elegante
+const glowPlugin = {
+    id: 'glow',
+    beforeDatasetDraw(chart) {
+        const ctx = chart.ctx;
+        const dataset = chart.data.datasets[0].data;
+        const maxValue = dataset[dataset.length - 1];
+        const intensity = Math.min(maxValue / 150000, 1);
+        ctx.save();
+        ctx.shadowColor = `rgba(212,175,55,${0.18 + intensity * 0.22})`;
+        ctx.shadowBlur = 8 + intensity * 14;
+    },
+    afterDatasetDraw(chart) {
+        chart.ctx.restore();
+    }
+};
 
 let chart;
 
 function calculate() {
-  gtag('event', 'calculate_clicked', {
-  event_category: 'engagement',
-  event_label: 'Simulador Free'
-});
+    gtag('event', 'calculate_clicked', {
+        event_category: 'engagement',
+        event_label: 'Simulador Free'
+    });
 
-    function animateValue(elementId, start, end, duration) {
-        const element = document.getElementById(elementId);
-        const range = end - start;
-        const startTime = performance.now();
+    const monthlyInput = document.getElementById("monthly");
+    let monthly = parseFloat(monthlyInput.value.replace(/\./g, "")) || 0;
+    if (monthly <= 0) monthly = 0;
 
-        function update(currentTime) {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const value = start + range * progress;
-
-            element.innerText = value.toLocaleString("es-ES", {
-                style: "currency",
-                currency: "EUR"
-            });
-
-            if (progress < 1) {
-                requestAnimationFrame(update);
-            }
-        }
-
-        requestAnimationFrame(update);
-    }
-    const btn = document.querySelector(".btn");
-    btn.style.opacity = "0.8";
-    btn.style.pointerEvents = "none";
-
-    setTimeout(() => {
-    btn.style.opacity = "1";
-    btn.style.pointerEvents = "auto";
-    }, 600);
-
-   let monthly = parseFloat(
-    document.getElementById("monthly").value.replace(/\./g, "")
-) || 0;
- 
-    if (isNaN(monthly) || monthly <= 0) monthly = 0;
-        
-    const years = parseFloat(document.getElementById("years").value);
+    const years = parseFloat(document.getElementById("years").value) || 1;
     const rate = 0.08;
     const inflation = 0.02;
-
     const months = years * 12;
+
     let balance = 0;
-    let data = [];
-    let investedData = [];
+    const data = [];
+    const investedData = [];
 
-for (let i = 1; i <= months; i++) {
-    balance = balance * (1 + rate/12) + monthly;
-
-    data.push(balance);
-    investedData.push(monthly * i);
-}
+    for (let i = 1; i <= months; i++) {
+        balance = balance * (1 + rate / 12) + monthly;
+        data.push(balance);
+        investedData.push(monthly * i);
+    }
 
     const totalInvested = monthly * months;
     const finalCapital = balance;
     const realCapital = finalCapital / Math.pow(1 + inflation, years);
     const interestEarned = finalCapital - totalInvested;
+
+    // Animaciones numéricas
+    const animateValue = (id, start, end, duration) => {
+        const el = document.getElementById(id);
+        const range = end - start;
+        const startTime = performance.now();
+        function update(now) {
+            const progress = Math.min((now - startTime) / duration, 1);
+            el.innerText = (start + range * progress).toLocaleString("es-ES", {style:"currency", currency:"EUR"});
+            if (progress < 1) requestAnimationFrame(update);
+        }
+        requestAnimationFrame(update);
+    };
 
     animateValue("finalCapital", 0, finalCapital, 900);
     animateValue("realCapital", 0, realCapital, 900);
@@ -875,158 +842,98 @@ for (let i = 1; i <= months; i++) {
     animateValue("interestEarned", 0, interestEarned, 900);
 
     const ctx = document.getElementById("chart").getContext("2d");
-
     if (chart) chart.destroy();
 
-    let yearsValid = parseFloat(document.getElementById("years").value);
-  if (isNaN(yearsValid) || yearsValid <= 0) yearsValid = 1;
+    const yearlyIndexes = Array.from({length: years}, (_, i) => (i+1)*12 - 1);
 
-const yearlyIndexes = Array.from({length: years}, (_, i) => (i+1)*12 - 1);
- 
-chart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: Array.from({length: months}, (_, i) => {
-        if ((i+1) % 12 === 0) return i/12 + 1; // solo mostrar año completo
-        return ""; // vacío para otros meses
-    }),
-        datasets: [
-        {
-            label: "Capital acumulado",
-            data: data,
-            borderColor: "#d4af37",
-            borderWidth: 2.8,
-            fill: false,
-            tension: 0.5,
-            cubicInterpolationMode: 'monotone',
-            pointRadius: 0,
-            segment: {
-                borderColor: ctx => {
-                    const gradient = ctx.chart.ctx.createLinearGradient(0, 0, ctx.chart.width, 0);
-                    gradient.addColorStop(0, "rgba(212,175,55,0.7)");
-                    gradient.addColorStop(1, "rgba(212,175,55,1)");
-                    return gradient;
+    chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: Array.from({length: months}, (_, i) => (i+1)%12===0 ? (i+1)/12 : ""),
+            datasets: [
+                {
+                    label: "Capital acumulado",
+                    data: data,
+                    borderColor: "#d4af37",
+                    borderWidth: 2.8,
+                    fill: false,
+                    tension: 0.45,
+                    cubicInterpolationMode: 'monotone',
+                    pointRadius: 0,
+                    segment: {
+                        borderColor: ctx => {
+                            const gradient = ctx.chart.ctx.createLinearGradient(0, 0, ctx.chart.width, 0);
+                            gradient.addColorStop(0, "rgba(212,175,55,0.7)");
+                            gradient.addColorStop(1, "rgba(212,175,55,1)");
+                            return gradient;
+                        }
+                    }
+                },
+                {
+                    label: "Capital aportado",
+                    data: investedData,
+                    borderColor: "rgba(200,200,200,0.35)",
+                    borderWidth: 1.4,
+                    borderDash: [6,6],
+                    fill: false,
+                    tension: 0.35,
+                    pointRadius: 0
                 }
-            }
+            ]
         },
-        {
-            label: "Capital aportado",
-            data: investedData,
-            borderColor: "rgba(200,200,200,0.35)",
-            borderWidth: 1.4,
-            borderDash: [6,6],
-            fill: false,
-            tension: 0.3,
-            pointRadius: 0
-        }
-        ]
-    },
-    options: {
-        maintainAspectRatio: false,
-        animation: {
-            duration: 1200,
-            easing: 'easeOutQuart'
-        },
-        interaction: {
-            mode: 'index',
-            intersect: false,
-            axis: 'x'
-        },
-        hover: {
-            mode: 'index',
-            intersect: false
-        },
-        plugins: {
-            legend: { display: false },
-            tooltip: {
-                enabled: false,
-                external: externalTooltipHandler
-            }
-        },
-        scales: {
-            x: {
-            grid: {
-                color: "rgba(255,255,255,0.04)",
-                drawBorder: false
+        options: {
+            maintainAspectRatio: false,
+            animation: { duration: 1200, easing: 'easeOutQuart' },
+            interaction: { mode: 'index', intersect: false, axis:'x' },
+            hover: { mode:'index', intersect:false },
+            plugins: {
+                legend: { display: false },
+                tooltip: { enabled: false, external: externalTooltipHandler }
             },
-            ticks: {
-                color: "rgba(255,255,255,0.5)",
-                font: {
-                    size: 10
+            scales: {
+                x: {
+                    grid: { color: "rgba(255,255,255,0.04)", drawBorder: false },
+                    ticks: {
+                        color: "rgba(255,255,255,0.5)",
+                        font: { size: 10 },
+                        maxTicksLimit: window.innerWidth < 768 ? 5 : 10
+                    }
                 },
-                maxTicksLimit: window.innerWidth < 768 ? 5 : 10
-            }
-        },
-            y: {
-                grid: {
-                    color: "rgba(255,255,255,0.04)",
-                    drawBorder: false
-                },
-                ticks: {
-                    color: "rgba(255,255,255,0.5)",
-                    font: {
-                        size: 11
-                    },
-                    callback: function(value) {
-                        return new Intl.NumberFormat('es-ES', {
-                            notation: "compact",
-                            maximumFractionDigits: 1
-                        }).format(value) + " €";
+                y: {
+                    grid: { color: "rgba(255,255,255,0.04)", drawBorder: false },
+                    ticks: {
+                        color: "rgba(255,255,255,0.5)",
+                        font: { size: 11 },
+                        callback: val => Intl.NumberFormat('es-ES',{notation:"compact", maximumFractionDigits:1}).format(val) + " €"
                     }
                 }
             }
-        }
-    },
+        },
+        plugins: [verticalLinePlugin, glowPlugin]
+    });
 
-    plugins: [verticalLinePlugin, glowPlugin]
-});
-
-  gtag('event', 'result_shown', {
-  event_category: 'engagement',
-  event_label: 'Resultado mostrado'
-});
-
+    gtag('event', 'result_shown', { event_category:'engagement', event_label:'Resultado mostrado' });
     document.getElementById("results").classList.add("visible");
     document.querySelector(".pro-block").classList.add("visible");
 
-    const explanation = `
-        Si inviertes <strong>${monthly.toLocaleString("es-ES", {style: "currency", currency: "EUR"})} al mes</strong> durante <strong>${years} años</strong>, podrías acumular aproximadamente <span>${finalCapital.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span>.
-
-        Habrás aportado <strong>${totalInvested.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</strong>, pero <span>${interestEarned.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span> vendrán del crecimiento de tu dinero con el tiempo.
-
+    document.getElementById("resultExplanation").innerHTML = `
+        Si inviertes <strong>${monthly.toLocaleString("es-ES",{style:"currency", currency:"EUR"})} al mes</strong> durante <strong>${years} años</strong>, podrías acumular aproximadamente <span>${finalCapital.toLocaleString("es-ES",{style:"currency", currency:"EUR"})}</span>.
+        Habrás aportado <strong>${totalInvested.toLocaleString("es-ES",{style:"currency", currency:"EUR"})}</strong>, pero <span>${interestEarned.toLocaleString("es-ES",{style:"currency", currency:"EUR"})}</span> vendrán del crecimiento de tu dinero con el tiempo.
         Esto es el efecto del interés compuesto: tu dinero empieza a trabajar por ti.
-        `;
-
-    const lateScenario = finalCapital * 0.7;
-    
-    const comparison = `
         <br><br>
         Si retrasas esta inversión unos años, podrías terminar con alrededor de 
-    <span>${lateScenario.toLocaleString("es-ES", {style:"currency", currency:"EUR"})}</span>.
-
-    <span>Empezar antes marca una gran diferencia.</span>
+        <span>${(finalCapital*0.7).toLocaleString("es-ES",{style:"currency", currency:"EUR"})}</span>.
+        <span>Empezar antes marca una gran diferencia.</span>
     `;
-
-document.getElementById("resultExplanation").innerHTML = explanation + comparison;
-    
 }
 
-    function formatNumber(value) {
-    return value.replace(/\D/g, "")
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
-
-    const monthlyInput = document.getElementById("monthly");
-
+// Formateo de input
+const monthlyInput = document.getElementById("monthly");
 monthlyInput.addEventListener("input", function() {
-    this.value = formatNumber(this.value);
+    this.value = this.value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     this.classList.add("changed");
-
-    setTimeout(() => {
-        this.classList.remove("changed");
-    }, 300);
+    setTimeout(() => this.classList.remove("changed"), 300);
 });
-
 </script>
 
 </body>

@@ -808,6 +808,7 @@
       };
       
       let chart; 
+      let yearlyIndexes = [];
       
       function calculate() 
       
@@ -876,7 +877,7 @@
        if (chart) chart.destroy(); 
        let yearsValid = parseFloat(document.getElementById("years").value);
        if (isNaN(yearsValid) || yearsValid <= 0) yearsValid = 1;
-       const yearlyIndexes = Array.from({length: years}, (_, i) => (i+1)*12 - 1); 
+       yearlyIndexes = Array.from({length: years}, (_, i) => (i+1)*12 - 1);
        
        chart = new Chart(ctx, {
          type: 'line', 
@@ -965,7 +966,8 @@
                   font: { size: 11 },
                   callback: function(value) {
                   return new Intl.NumberFormat('es-ES', {
-                    notation: "compact", maximumFractionDigits: 1 
+                    notation: "compact", 
+                    maximumFractionDigits: 1 
                   }).format(value) + " €"; 
                 }
               } 

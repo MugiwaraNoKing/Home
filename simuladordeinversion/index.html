@@ -826,8 +826,8 @@ function calculate() {
 
    let monthly = parseFloat(
     document.getElementById("monthly").value.replace(/\./g, "")
-    );
-
+) || 0;
+ 
     if (isNaN(monthly) || monthly <= 0) monthly = 0;
         
     const years = parseFloat(document.getElementById("years").value);

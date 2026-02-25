@@ -1,236 +1,779 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta name="google-site-verification" content="myBcnOWByarVwV4a5_MfZoFnzrMgCgu0cjO9gy80CN0" />
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-GLW3B4MTLH"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-GLW3B4MTLH');
-</script>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Calcula cuánto dinero puedes acumular invirtiendo cada mes. Simulador de inversión a largo plazo con interés compuesto e inflación.">
-
-<title>Simulador de Inversión | Fynantium</title>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!DOCTYPE html> 
+<html lang="es"> 
+<head> 
+  <meta name="google-site-verification" 
+  content="myBcnOWByarVwV4a5_MfZoFnzrMgCgu0cjO9gy80CN0" /> 
   
-<style>
-/* --- TU CSS ACTUAL --- */
-/* Lo dejamos igual, el CSS no cambia */
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: inherit; }
-/* ... resto del CSS que ya tienes ... */
-</style>
+  <!-- Google tag (gtag.js) --> 
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GLW3B4MTLH"></script> 
+  
+  <script> 
+    window.dataLayer = window.dataLayer || []; 
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date()); 
+    gtag('config', 'G-GLW3B4MTLH'); 
+  </script> 
+  
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <meta name="description" content="Calcula cuánto dinero puedes acumular invirtiendo cada mes. Simulador de inversión a largo plazo con interés compuesto e inflación."> 
+  
+  <title>Simulador de Inversión | Fynantium</title> 
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"> 
+  
+  <style> 
+    
+    /* RESET */ 
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: inherit; } 
+    
+    /* FONDO */ 
+    
+    body { 
+      background: #0c1714; 
+      color: #e6e8e6; 
+      font-family: "Inter", -apple-system, 
+        BlinkMacSystemFont, sans-serif; 
+      -webkit-font-smoothing: antialiased; 
+      -moz-osx-font-smoothing: grayscale; 
+      letter-spacing: -0.1px; 
+      line-height: 1.6; 
+    } 
+    
+    /* LOGO */ 
+    
+    .logo { 
+      position: absolute; 
+      top: 25px; 
+      left: 40px; 
+    } 
+    
+    .logo img {
+      height: 250px; 
+    } 
+    .logo span {
+      font-weight: 600; 
+    } 
+    
+    /* RESPONSIVE */ 
+    
+    @media (max-width: 768px) {
+      .logo { 
+        position: relative; 
+        text-align: center; 
+        top: 0; left: 0; 
+        margin-top: 20px; 
+        margin-bottom: 10px; 
+      } 
+      
+      .logo img {
+        height: 150px; 
+      } 
+      
+      .container {
+        margin-top: 10px; 
+      } 
+    } 
+    
+    /* CONTENIDO */ 
+    
+    .container { 
+      max-width: 1100px; 
+      margin: 40px auto 60px auto; 
+      padding: 0 20px; 
+    } 
+    
+    /* TITULO */ 
+    
+    .title-wrapper {
+      text-align: center; 
+      margin-bottom: 70px; 
+    } 
+    
+    .title-plate {
+      display: inline-block; 
+      padding: 26px 60px; /* más presencia */ 
+      border-radius: 18px; 
+      background: linear-gradient(145deg, #13211c, #0e1a16); 
+      box-shadow: 
+        inset 0 1px 2px rgba(255,255,255,0.06), 
+        inset 0 -2px 6px rgba(0,0,0,0.6), 
+        0 12px 35px rgba(0,0,0,0.6); /* sombra más profunda */ 
+      border: 1px solid rgba(212,175,55,0.35); /* oro ligeramente más visible */ 
+    }
+    h1 {
+      font-size: 38px; 
+      font-weight: 500; 
+      letter-spacing: 1.5px; 
+      background: linear-gradient(90deg, #ffffff, #d6d6d6); 
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent; 
+    }
+    
+    /* INPUTS */ 
+    
+    .inputs {
+      display: flex; 
+      justify-content: center; 
+      gap: 40px; 
+      margin-bottom: 25px; 
+      flex-wrap: wrap; 
+    }
+    
+    input:focus {
+      outline: none;
+      border: 1px solid rgba(212,175,55,0.6);
+      box-shadow: 0 0 0 3px rgba(212,175,55,0.12);
+    }
+    
+    .input-group {
+      display: flex;
+      flex-direction: column; 
+      text-align: left; 
+    }
+    
+    label {
+      font-size: 14px; 
+      margin-bottom: 6px; 
+      color: #a8b0ab; 
+    }
+    
+    input {
+      width: 150px; 
+      padding: 12px; 
+      border-radius: 8px; 
+      border: 1px solid rgba(255,255,255,0.08); 
+      background: linear-gradient(145deg, #13211c, #0e1a16); 
+      color: white; 
+      font-size: 15px; 
+      text-align: center; 
+      transition: all 0.25s ease; 
+      font-variant-numeric: tabular-nums; 
+    }
+    
+    input[disabled] {
+      opacity: 0.5; 
+      border: 1px solid rgba(255,255,255,0.05); 
+      cursor: not-allowed; 
+    }
+    
+    input:hover { 
+      border: 1px solid rgba(212,175,55,0.35);
+    }
+    
+    /* Quitar flechas en Chrome, Safari, Edge */
+    
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    } 
+    
+    /* Quitar flechas en Firefox */ 
+    
+    input[type=number] {
+      -moz-appearance: textfield; 
+    }
+    
+    .input-wrapper {
+      position: relative; 
+      display: inline-block; 
+    }
+    
+    .currency-symbol {
+      position: absolute;
+      left: 12px;
+      top: 50%; 
+      transform: translateY(-50%); 
+      font-size: 14px; 
+      color: #9aa59e; 
+      pointer-events: none; 
+    }
+    
+    .input-wrapper input {
+      padding-right: 55px; 
+    }
+    
+    .input-wrapper input.changed {
+      transition: background 0.3s ease;
+      background: linear-gradient(145deg, #162a23, #111f1a); 
+    }
+    
+    .input-suffix {
+      position: absolute; 
+      right: 14px; 
+      top: 50%; 
+      transform: translateY(-50%); 
+      font-size: 12px; 
+      color: rgba(255,255,255,0.28); /* semi-transparente */ 
+      letter-spacing: 0.5px; 
+      pointer-events: none; 
+      font-weight: 500; 
+    }
+    
+    /* NOTA */ 
+    
+    .note {
+      text-align: center;
+      font-size: 13px;
+      color: #a8b0ab;
+      margin-bottom: 30px; 
+    }
+    
+    /* BOTON */ 
+    
+    .btn {
+      display: inline-block;
+      padding: 17px 42px;
+      letter-spacing: 0.4px;
+      font-size: 17px;
+      font-weight: 500;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #c9a63a, #e4c15a);
+      color: #111827;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(212,175,55,0.4); 
+    }
+    
+    .btn::after {
+      content: "";
+      position: absolute; 
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        120deg, 
+        transparent, 
+        rgba(255,255,255,0.25),
+        transparent
+      );
+      transition: all 0.6s ease; 
+    }
+    
+    .btn:hover::after {
+      left: 100%; 
+    } 
+    
+    button.btn {
+      border: none;
+      cursor: pointer; 
+    }
+    
+    button.btn:active {
+      transform: translateY(-1px); 
+    }
+    
+    .btn-wrapper {
+      text-align: center;
+      margin: 40px 0 60px 0;
+    }
+    
+    /* RESULTADOS */
+    
+    .results {
+      background: linear-gradient(145deg, #0f1d18, #0b1512);
+      border-radius: 14px;
+      padding: 35px;
+      margin-bottom: 80px;
+      border-top: 2px solid rgba(212,175,55,0.6);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.5s ease;
+    }
+    
+    .results.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: 30px; 
+      text-align: center; 
+    }
+    
+    .result-value {
+      font-size: 38px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    } 
+    
+    .result-label {
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #9aa59e;
+    }
+    
+    .metric h3 {
+      font-size: 14px;
+      font-weight: 500;
+      color: #a8b0ab;
+      margin-bottom: 8px;
+      letter-spacing: 0.8px;
+    }
+    
+    .metric p {
+      font-size: 26px;
+      font-weight: 600;
+      color: #ffffff; 
+    }
+    
+    .results-container {
+      background-color: #1f1f1f;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .metric {
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.4s ease;
+    }
+    
+    .results.visible .metric {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .results.visible .metric:nth-child(1) {
+      transition-delay: 0.05s;
+    }
+    
+    .results.visible .metric:nth-child(2) {
+      transition-delay: 0.10s;
+    }
+    
+    .results.visible .metric:nth-child(3) {
+      transition-delay: 0.15s;
+    }
+    
+    .results.visible .metric:nth-child(4) {
+      transition-delay: 0.20s; 
+    }
+    
+    .results.visible .metric:nth-child(5) {
+      transition-delay: 0.25s;
+    }
+    
+    .pro-locked {
+      opacity: 0.45;
+      filter: grayscale(40%);
+      transition: opacity 0.3s ease;
+    }
+    
+    .metric.pro-locked .locked-link {
+      display: inline-block;
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      letter-spacing: 0.3px;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+    
+    .metric.pro-locked .locked-link:hover {
+      color: rgba(212,175,55,0.85);
+      transform: translateX(3px);
+    }
+    
+    .pro-inline {
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(212,175,55,0.65);
+      margin-left: 6px;
+      letter-spacing: 0.4px; 
+    }
+    
+    .pro-locked:hover {
+      opacity: 0.7;
+    }
+    
+    .lock {
+      margin-left: 6px;
+      font-size: 13px;
+      opacity: 0.7;
+    }
+    
+    .metric.pro-locked p {
+      font-size: 14px !important;
+      font-weight: 400;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.3px;
+    }
+    
+    /* GRAFICA */ 
+    
+    .chart-container {
+      position: relative;
+      height: 300px; /* móvil por defecto */ 
+      background: linear-gradient(145deg, #162620, #101c17); 
+      padding: 20px;
+      border: 1px solid rgba(212,175,55,0.18); 
+      border-radius: 12px; 
+      margin-top: 40px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.6s ease; 
+    }
+    
+    @media (min-width: 768px) {
+      .chart-container { height: 380px;
+        }
+    }
+    
+    .results.visible .chart-container {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.25s;
+    }
+    
+    #chartjs-tooltip {
+      position: absolute; 
+      background: rgba(16, 24, 20, 0.96);
+      border: 1px solid rgba(212,175,55,0.25);
+      border-radius: 12px;
+      padding: 14px 16px;
+      pointer-events: none;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+      opacity: 0;
+      transform: translateY(6px);
+      transition: 
+        opacity 0.18s ease-out,
+        transform 0.18s ease-out; 
+    }
+    
+    .tooltip-content {
+      background: linear-gradient(145deg, #13211c, #0e1a16);
+      border: 1px solid rgba(212,175,55,0.35);
+      padding: 12px 16px;
+      border-radius: 10px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+      text-align: center;
+      min-width: 140px;
+    }
+    
+    .tooltip-year {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
+    }
+    
+    .tooltip-value {
+      font-size: 16px;
+      font-weight: 600;
+      color: #d4af37; 
+    }
+    
+    .tooltip-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 6px;
+      color: #cfd6d2;
+    }
+    
+    .tooltip-row span:first-child {
+      flex: 1;
+      padding-right: 14px;
+    }
+    
+    .tooltip-row span:last-child {
+      text-align: right;
+      min-width: 110px;
+    }
+    
+    .tooltip-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.08);
+      margin: 6px 0;
+    }
+    
+    .tooltip-row.highlight {
+      color: #ffffff;
+      font-weight: 600;
+    }
+    
+    /* BLOQUE EXPLICATIVO */
+    
+    .result-explanation {
+      margin-top: 30px;
+      padding: 22px 26px;
+      border-radius: 12px;
+      background: linear-gradient(145deg, #13211c, #0e1a16);
+      border: 1px solid rgba(212,175,55,0.25);
+      font-size: 15px;
+      line-height: 1.6;
+      color: #d6d6d6;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.5s ease; 
+    }
+    
+    .results.visible .result-explanation {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.35s;
+    }
+    
+    .result-explanation strong {
+      color: #ffffff;
+    }
+    
+    .result-explanation span {
+      color: #d4af37;
+      font-weight: 500;
+    }
+    
+    /* MICROCOPY */
+    
+    .microcopy {
+      text-align: center;
+      font-size: 13px;
+      color: #8b8f98;
+      margin-top: 20px;
+    }
+    
+    /* PRO */ 
+    
+    .pro-block::before {
+      content: "";
+      display: block;
+      width: 60px;
+      height: 1px;
+      background: rgba(212,175,55,0.4);
+      margin: -40px auto 40px auto;
+    }
+    
+    .pro-block {
+      text-align: center;
+      margin-top: 60px;
+      font-size: 14px;
+      color: #a8b0ab; 
+    }
+    
+    .pro-block span {
+      display: block;
+      margin-top: 8px;
+      color: #d4af37;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.6s ease;
+    }
+    
+    .pro-block.visible { 
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .pro-title-link {
+      text-decoration: none;
+      color: rgba(255,255,255,0.9);
+      font-weight: 500;
+      transition: all 0.25s ease; 
+    }
+    
+    .pro-title-link:hover {
+      color: rgba(212,175,55,0.9);
+      transform: translateY(-2px);
+    }
+  
+  </style>
+
 </head>
-
-<body>
-
-<div class="logo">
-  <a href="https://fynantium.com">
-    <img src="assets/logo-fynantium.png" alt="Fynantium">
-  </a>
-</div>
-
-<div class="container">
-
-    <div class="title-wrapper">
+  <body>
+    <div class="logo">
+      <a href="https://fynantium.com">
+        <img src="assets/logo-fynantium.png" 
+          alt="Fynantium"> 
+      </a>
+    </div>
+    
+    <div class="container"> 
+      <div class="title-wrapper">
         <div class="title-plate">
-            <h1>Simulador de Inversión</h1>
+          <h1>Simulador de Inversión</h1>
         </div>
-    </div>
-
-    <div class="inputs">
+      </div>
+      
+      <div class="inputs"> 
         <div class="input-group">
-        <label>Aportación mensual</label>
-        <div class="input-wrapper">
-            <input type="text" id="monthly" value="300">
+          <label>Aportación mensual</label> 
+          <div class="input-wrapper">
+            <input type="text" id="monthly" value="300"> 
             <span class="input-suffix">€</span>
+          </div>
         </div>
-    </div>
-       
         <div class="input-group">
-        <label>Años de inversión</label>
-        <div class="input-wrapper">
+          <label>Años de inversión</label>
+          <div class="input-wrapper">
             <input type="number" id="years" value="20">
             <span class="input-suffix">años</span>
+          </div>
         </div>
-    </div>
-
         <div class="input-group">
-            <label>Rentabilidad anual (%)</label>
-            <input type="number" value="8" disabled>
-        </div>
-
+          <label>Rentabilidad anual (%)</label>
+          <input type="number" value="8" disabled>
+        </div> 
         <div class="input-group">
-            <label>Inflación anual (%)</label>
-            <input type="number" value="2" disabled>
+          <label>Inflación anual (%)</label>
+          <input type="number" value="2" disabled>
         </div>
-    </div>
-
-    <div class="note">
-        Rentabilidad media anual 8% · Inflación media anual 2%
-    </div>
-
-    <div class="btn-wrapper">
-    <button class="btn" onclick="calculate()">Calcular proyección</button>
-    </div>
-
-    <div class="results" id="results">
-        <div class="results-grid">
-            <div class="metric">
-                <h3>Total aportado</h3>
-                <p id="totalInvested">-</p>
-            </div>
-            <div class="metric">
-                <h3>Intereses generados</h3>
-                <p id="interestEarned">-</p>
-            </div>
-            <div class="metric">
-                <h3>Capital final</h3>
-                <p id="finalCapital">-</p>
-            </div>
-            <div class="metric">
-                <h3>Valor real ajustado a inflación</h3>
-                <p id="realCapital">-</p>
-            </div>
-            <div class="metric pro-locked">
-            <h3>
-                Rentabilidad anualizada
-            </h3>
-            <a href="simuladordeinversion/pro.html" class="locked-link">Disponible en PRO</a>
-        </div>
-
-        </div>
-
-        <div class="chart-container">
-            <canvas id="chart"></canvas>
-        </div>
+      </div>
+      
+      <div class="note"> Rentabilidad media anual 8% · Inflación media anual 2% </div>
+      
+      <div class="btn-wrapper">
+        <button class="btn" onclick="calculate()">Calcular proyección</button>
+      </div>
+      
+      <div class="results" id="results"> 
         
-        <div class="result-explanation" id="resultExplanation">
-            
-        </div>
+      <div class="results-grid"> 
         
-        <div class="microcopy">
-        <p>
-            Proyección basada en rendimientos históricos medios del mercado.
-        </p>
-        <p>
-            Esta herramienta es una simulación matemática y no constituye asesoramiento financiero.
-        </p>
-        </div>
-    </div>
-
-    <div class="pro-block">
-        <p>
-            <a href="simuladordeinversion/pro.html" 
-           class="pro-title-link"
-           onclick="event.preventDefault(); 
-                    gtag('event', 'pro_clicked', {
-                      event_category: 'conversion',
-                      event_label: 'Click PRO'
-                    }); 
-                    setTimeout(() => {
-                      window.location.href='simuladordeinversion/pro.html';
-                    }, 150);">
-           Fynantium PRO — Acceso completo al laboratorio
-        </a>
-        </p>
-        <p>
-        ¿Y si pudieras comparar distintos escenarios o ajustar la inflación? 
-        </p>
-        <p>
-        Simulación por escenarios, análisis ajustado por inflación y proyecciones avanzadas estarán disponibles próximamente.
-        </p>
-        <span>Mayor control · Comparación de escenarios · Exportación profesional</span>
-    </div>
-
-</div>
-
-<!-- --- BLOQUE DE SCRIPT REEMPLAZADO --- -->
-<script>
-let chart;
-const yearlyIndexes = [];
-
-function formatNumber(value) {
-    return value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
-
-document.getElementById("monthly").addEventListener("input", function() {
-    this.value = formatNumber(this.value);
-    this.classList.add("changed");
-    setTimeout(() => { this.classList.remove("changed"); }, 300);
-});
-
-const externalTooltipHandler = (context) => {
-    const { chart, tooltip } = context;
-    let tooltipEl = document.getElementById('chartjs-tooltip');
-
-    if (!tooltipEl) {
-        tooltipEl = document.createElement('div');
-        tooltipEl.id = 'chartjs-tooltip';
-        tooltipEl.innerHTML = "<div class='tooltip-content'></div>";
-        document.body.appendChild(tooltipEl);
-    }
-
-    if (tooltip.opacity === 0) {
-        tooltipEl.style.opacity = 0;
-        tooltipEl.style.transform = "translateY(6px)";
-        return;
-    }
-
-    const index = tooltip.dataPoints[0].dataIndex;
-    if (!yearlyIndexes.includes(index)) {
-        tooltipEl.style.opacity = 0;
-        return;
-    }
-
-    const year = Math.floor((index + 1) / 12);
-    const capitalAcumulado = chart.data.datasets[0].data[index];
-    const capitalAportado = chart.data.datasets[1].data[index];
-    const interesGenerado = capitalAcumulado - capitalAportado;
-    const formatCurrency = val => val.toLocaleString("es-ES", { style:"currency", currency:"EUR" });
-
-    tooltipEl.querySelector('.tooltip-content').innerHTML = `
+      <div class="metric"> 
+        <h3>Total aportado</h3> 
+        <p id="totalInvested">-</p> 
+      </div> 
+        
+        <div class="metric"> 
+          <h3>Intereses generados</h3> 
+          <p id="interestEarned">-</p> 
+        </div> 
+        
+        <div class="metric"> 
+          <h3>Capital final</h3> 
+          <p id="finalCapital">-</p> 
+        </div> 
+        
+        <div class="metric"> 
+          <h3>Valor real ajustado a inflación</h3> 
+          <p id="realCapital">-</p> 
+        </div> 
+        
+        <div class="metric pro-locked"> 
+          <h3> Rentabilidad anualizada </h3> 
+          <a href="simuladordeinversion/pro.html" class="locked-link">Disponible en PRO</a> 
+        </div> 
+      </div> 
+        
+        <div class="chart-container"> 
+          <canvas id="chart"></canvas>
+        </div> 
+        
+        <div class="result-explanation" id="resultExplanation"> 
+        </div> <div class="microcopy"> 
+          <p> Proyección basada en rendimientos históricos medios del mercado. </p> 
+          <p> Esta herramienta es una simulación matemática y no constituye asesoramiento financiero. </p> 
+        </div> 
+      </div> 
+      
+      <div class="pro-block"> 
+        <p> <a href="simuladordeinversion/pro.html" class="pro-title-link" onclick="event.preventDefault(); gtag('event', 'pro_clicked', { event_category: 'conversion', event_label: 'Click PRO' }); setTimeout(() => { window.location.href='simuladordeinversion/pro.html'; }, 150);"> Fynantium PRO — Acceso completo al laboratorio </a> </p>
+        <p> ¿Y si pudieras comparar distintos escenarios o ajustar la inflación? </p> 
+        <p> Simulación por escenarios, análisis ajustado por inflación y proyecciones avanzadas estarán disponibles próximamente. </p> 
+        <span>Mayor control · Comparación de escenarios · Exportación profesional</span> 
+      </div> 
+    </div> 
+    
+    <script> 
+      
+      const externalTooltipHandler = (context) => {
+        const { chart, tooltip } = context;
+        let tooltipEl = document.getElementById('chartjs-tooltip');
+        if (!tooltipEl) {
+          tooltipEl = document.createElement('div');
+          tooltipEl.id = 'chartjs-tooltip';
+          tooltipEl.innerHTML = "<div class='tooltip-content'></div>";
+          document.body.appendChild(tooltipEl); 
+        }
+        if (tooltip.opacity === 0) {
+          tooltipEl.style.opacity = 0; tooltipEl.style.transform = "translateY(6px)";
+          return; 
+        }
+        
+        const index = tooltip.dataPoints[0].dataIndex;
+        
+        // Mostrar solo años completos //
+        
+        if (!yearlyIndexes.includes(index)) {
+          tooltipEl.style.opacity = 0;
+          return; 
+        }
+        
+        const year = Math.floor((index + 1) / 12);
+        
+        const capitalAcumulado = chart.data.datasets[0].data[index];
+        const capitalAportado = chart.data.datasets[1].data[index];
+        const interesGenerado = capitalAcumulado - capitalAportado; 
+        const formatCurrency = (val) => val.toLocaleString("es-ES", { style: "currency", currency: "EUR" });
+        
+        tooltipEl.querySelector('.tooltip-content').innerHTML = 
         <div class="tooltip-year">Año ${year}</div>
-        <div class="tooltip-row"><span>Capital acumulado</span><span>${formatCurrency(capitalAcumulado)}</span></div>
-        <div class="tooltip-row"><span>Capital aportado</span><span>${formatCurrency(capitalAportado)}</span></div>
-        <div class="tooltip-divider"></div>
-        <div class="tooltip-row highlight"><span>Interés generado</span><span>${formatCurrency(interesGenerado)}</span></div>
-    `;
-
-    const canvasPosition = chart.canvas.getBoundingClientRect();
-    const tooltipWidth = tooltipEl.offsetWidth;
-    const tooltipHeight = tooltipEl.offsetHeight;
-
-    let left = canvasPosition.left + window.pageXOffset + tooltip.caretX + 20;
-    let top = canvasPosition.top + window.pageYOffset + tooltip.caretY - tooltipHeight / 2;
-
-    const pageWidth = document.documentElement.clientWidth;
-    const pageHeight = document.documentElement.clientHeight;
-    if (left + tooltipWidth + 10 > window.pageXOffset + pageWidth) left = canvasPosition.left + window.pageXOffset + tooltip.caretX - tooltipWidth - 20;
-    if (top < window.pageYOffset + 10) top = window.pageYOffset + 10;
-    if (top + tooltipHeight > window.pageYOffset + pageHeight - 10) top = window.pageYOffset + pageHeight - tooltipHeight - 10;
-
-    tooltipEl.style.left = left + "px";
-    tooltipEl.style.top = top + "px";
-    tooltipEl.style.opacity = 1;
-    tooltipEl.style.transform = "translateY(0px)";
-};
-
-const verticalLinePlugin = {
-    id: 'verticalLine',
-    afterDraw: (chart) => {
-        if (chart.tooltip?._active?.length) {
+        <div class="tooltip-row"> 
+          <span>Capital acumulado</span>
+          <span>${formatCurrency(capitalAcumulado)}</span> 
+        </div> 
+        <div class="tooltip-row"> 
+          <span>Capital aportado</span>
+          <span>${formatCurrency(capitalAportado)}</span>
+        </div>
+        <div class="tooltip-divider"></div> 
+        <div class="tooltip-row highlight">
+          <span>Interés generado</span> 
+          <span>${formatCurrency(interesGenerado)}</span>
+        </div> ;
+        
+        const canvasPosition = chart.canvas.getBoundingClientRect();
+        const tooltipWidth = tooltipEl.offsetWidth; 
+        const tooltipHeight = tooltipEl.offsetHeight; 
+        let left = canvasPosition.left + window.pageXOffset + tooltip.caretX + 20; 
+        let top = canvasPosition.top + window.pageYOffset + tooltip.caretY - tooltipHeight / 2; 
+      
+      // Optimización móvil: ajustar posición si se sale de la pantalla //
+      
+        const pageWidth = document.documentElement.clientWidth; 
+        const pageHeight = document.documentElement.clientHeight; 
+      
+      // Evitar que se salga a la derecha //
+      
+        if (left + tooltipWidth + 10 > window.pageXOffset + pageWidth) {
+          left = canvasPosition.left + window.pageXOffset + tooltip.caretX - tooltipWidth - 20; 
+        } 
+      
+      // Evitar que se salga por arriba o abajo //
+      
+        if (top < window.pageYOffset + 10) top = window.pageYOffset + 10;
+        if (top + tooltipHeight > window.pageYOffset + pageHeight - 10) top = window.pageYOffset + pageHeight - tooltipHeight - 10;
+        tooltipEl.style.left = left + "px";
+        tooltipEl.style.top = top + "px";
+        tooltipEl.style.opacity = 1;
+        tooltipEl.style.transform = "translateY(0px)"; 
+        };
+      
+      const verticalLinePlugin = {
+        id: 'verticalLine',
+        afterDraw: (chart) => {
+          if (chart.tooltip?._active?.length) {
             const ctx = chart.ctx;
             const x = chart.tooltip._active[0].element.x;
             const topY = chart.scales.y.top;
             const bottomY = chart.scales.y.bottom;
+            
             ctx.save();
             ctx.beginPath();
             ctx.moveTo(x, topY);
@@ -239,109 +782,230 @@ const verticalLinePlugin = {
             ctx.strokeStyle = 'rgba(212,175,55,0.35)';
             ctx.stroke();
             ctx.restore();
+          }
         }
-    }
-};
-
-const glowPlugin = {
-    id: 'glow',
-    beforeDatasetDraw(chart) {
-        const ctx = chart.ctx;
-        ctx.save();
-        const dataset = chart.data.datasets[0].data;
-        const maxValue = dataset[dataset.length-1];
-        const intensity = Math.min(maxValue / 150000, 1);
-        const blur = 8 + intensity * 14;
-        const opacity = 0.18 + intensity * 0.22;
-        ctx.shadowColor = `rgba(212,175,55,${opacity})`;
-        ctx.shadowBlur = blur;
-    },
-    afterDatasetDraw(chart) { chart.ctx.restore(); }
-};
-
-function calculate() {
-    gtag('event', 'calculate_clicked', { event_category: 'engagement', event_label: 'Simulador Free' });
-
-    const btn = document.querySelector(".btn");
-    btn.style.opacity = "0.8"; btn.style.pointerEvents = "none";
-    setTimeout(()=>{ btn.style.opacity="1"; btn.style.pointerEvents="auto"; }, 600);
-
-    let monthly = parseFloat(document.getElementById("monthly").value.replace(/\./g,"")) || 0;
-    if(monthly <= 0) monthly=0;
-    let years = parseFloat(document.getElementById("years").value);
-    if(isNaN(years)||years<=0) years=1;
-    const rate=0.08, inflation=0.02, months=years*12;
-
-    yearlyIndexes.length=0;
-    for(let i=0;i<years;i++) yearlyIndexes.push((i+1)*12-1);
-
-    let balance=0, data=[], investedData=[];
-    for(let i=1;i<=months;i++){ balance = balance*(1+rate/12)+monthly; data.push(balance); investedData.push(monthly*i); }
-
-    const totalInvested = monthly*months;
-    const finalCapital = balance;
-    const realCapital = finalCapital / Math.pow(1+inflation, years);
-    const interestEarned = finalCapital - totalInvested;
-
-    function animateValue(id,start,end,duration){
-        const element=document.getElementById(id); const range=end-start; const startTime=performance.now();
-        function update(now){ const elapsed=now-startTime; const progress=Math.min(elapsed/duration,1); element.innerText=(start+range*progress).toLocaleString("es-ES",{style:"currency",currency:"EUR"}); if(progress<1) requestAnimationFrame(update);}
-        requestAnimationFrame(update);
-    }
-    animateValue("totalInvested",0,totalInvested,700);
-    animateValue("interestEarned",0,interestEarned,900);
-    animateValue("finalCapital",0,finalCapital,900);
-    animateValue("realCapital",0,realCapital,900);
-
-    const ctx = document.getElementById("chart").getContext("2d");
-    if(chart) chart.destroy();
-
-    chart = new Chart(ctx,{
-        type:'line',
-        data:{labels:Array.from({length:months},(_,i)=>{if((i+1)%12===0)return i/12+1;return""}),
-            datasets:[
-                {label:"Capital acumulado", data:data, borderColor:"#d4af37", borderWidth:2.8, fill:false, tension:0.45, cubicInterpolationMode:'monotone', pointRadius:0,
-                    segment:{borderColor:ctx=>{
-                        const grad=ctx.chart.ctx.createLinearGradient(0,0,ctx.chart.width,0);
-                        grad.addColorStop(0,"rgba(212,175,55,0.7)");
-                        grad.addColorStop(1,"rgba(212,175,55,1)");
-                        return grad;
-                    }}
+      };
+      
+      const glowPlugin = {
+        id: 'glow', beforeDatasetDraw(chart, args, options) {
+          const {ctx, data} = chart; ctx.save(); 
+          const dataset = data.datasets[0].data; 
+          const maxValue = dataset[dataset.length - 1];
+          
+          // Escalado elegante (ajústalo si quieres) //
+          
+          const intensity = Math.min(maxValue / 150000, 1); 
+          const blur = 8 + (intensity * 14); 
+          const opacity = 0.18 + (intensity * 0.22); 
+          
+          ctx.shadowColor = rgba(212,175,55,${opacity}); 
+          ctx.shadowBlur = blur; 
+        },
+        afterDatasetDraw(chart) {
+          chart.ctx.restore();
+        } 
+      };
+      
+      let chart; 
+      
+      function calculate() 
+      
+      { gtag('event', 'calculate_clicked', {
+        event_category: 'engagement', 
+        event_label: 'Simulador Free' 
+      }); 
+       
+       function animateValue(elementId, start, end, duration) {
+         const element = document.getElementById(elementId);
+         const range = end - start;
+         const startTime = performance.now();
+         function update(currentTime) {
+           const elapsed = currentTime - startTime;
+           const progress = Math.min(elapsed / duration, 1);
+           const value = start + range * progress; element.innerText = value.toLocaleString("es-ES", 
+            { style: "currency", currency: "EUR" 
+            }); 
+           
+           if (progress < 1) {
+             requestAnimationFrame(update); 
+           } 
+         } 
+         
+         requestAnimationFrame(update); 
+       } 
+       
+       const btn = document.querySelector(".btn");
+       btn.style.opacity = "0.8"; 
+       btn.style.pointerEvents = "none"; 
+       
+       setTimeout(() => {
+         btn.style.opacity = "1"; 
+         btn.style.pointerEvents = "auto"; 
+       }, 600); 
+       
+       let monthly = parseFloat(
+         document.getElementById("monthly").value.replace(/\./g, "") 
+       ) || 0; 
+       
+       if (isNaN(monthly) || monthly <= 0) monthly = 0;
+       
+       const years = parseFloat(document.getElementById("years").value); 
+       const rate = 0.08; 
+       const inflation = 0.02; 
+       const months = years * 12; 
+       let balance = 0; 
+       let data = []; 
+       let investedData = []; 
+       for (let i = 1; i <= months; i++) {
+         balance = balance * (1 + rate/12) + monthly;
+         data.push(balance);
+         investedData.push(monthly * i);
+       } 
+       const totalInvested = monthly * months;
+       const finalCapital = balance;
+       const realCapital = finalCapital / Math.pow(1 + inflation, years);
+       const interestEarned = finalCapital - totalInvested;
+       
+       animateValue("finalCapital", 0, finalCapital, 900); 
+       animateValue("realCapital", 0, realCapital, 900); 
+       animateValue("totalInvested", 0, totalInvested, 700); 
+       animateValue("interestEarned", 0, interestEarned, 900); 
+       
+       const ctx = document.getElementById("chart").getContext("2d"); 
+       if (chart) chart.destroy(); 
+       let yearsValid = parseFloat(document.getElementById("years").value);
+       if (isNaN(yearsValid) || yearsValid <= 0) yearsValid = 1;
+       const yearlyIndexes = Array.from({length: years}, (_, i) => (i+1)*12 - 1); 
+       
+       chart = new Chart(ctx, {
+         type: 'line', 
+         data: {
+           labels: Array.from({length: months}, (_, i) => {
+             if ((i+1) % 12 === 0) return i/12 + 1; // solo mostrar año completo return ""; // vacío para otros meses }),
+              datasets: [
+                { 
+                  label: "Capital acumulado", 
+                  data: data, 
+                  borderColor: "#d4af37", 
+                  borderWidth: 2.8, 
+                  fill: false, 
+                  tension: 0.5, 
+                  cubicInterpolationMode: 'monotone', 
+                  pointRadius: 0, 
+                  segment: {
+                    borderColor: ctx => {
+                      const gradient = ctx.chart.ctx.createLinearGradient(0, 0, ctx.chart.width, 0);
+                      gradient.addColorStop(0, "rgba(212,175,55,0.7)"); 
+                      gradient.addColorStop(1, "rgba(212,175,55,1)"); 
+                      return gradient; 
+                    } 
+                  } 
                 },
-                {label:"Capital aportado", data:investedData, borderColor:"rgba(200,200,200,0.35)", borderWidth:1.4, borderDash:[6,6], fill:false, tension:0.3, pointRadius:0}
-            ]
+                
+                { label: "Capital aportado",
+                 data: investedData,
+                 borderColor: "rgba(200,200,200,0.35)",
+                 borderWidth: 1.4,
+                 borderDash: [6,6],
+                 fill: false,
+                 tension: 0.3, 
+                 pointRadius: 0 
+                } 
+              ] 
+           }, 
+                              
+          options: {
+            maintainAspectRatio: false,
+            animation: {
+              duration: 1200,
+              easing: 'easeOutQuart' 
+            },
+            interaction: {
+              mode: 'index',
+              intersect: false,
+              axis: 'x' 
+            },
+            hover: {
+              mode: 'index',
+              intersect: false 
+            }, 
+            plugins: {
+              legend: {
+                display: false 
+              },
+              tooltip: {
+                enabled: false,
+                external: externalTooltipHandler 
+              }
+            }, 
+            scales: {
+              x: {
+                grid: {
+                  color: "rgba(255,255,255,0.04)",
+                  drawBorder: false 
+                }, 
+                ticks: {
+                  color: "rgba(255,255,255,0.5)",
+                  font: {
+                    size: 10 
+                  },
+                  maxTicksLimit: window.innerWidth < 768 ? 5 : 10 
+                }
+              },
+              y: {
+                grid: { 
+                  color: "rgba(255,255,255,0.04)", 
+                  drawBorder: false 
+                },
+                ticks: {
+                  color: "rgba(255,255,255,0.5)",
+                  font: { size: 11 },
+                  callback: function(value) {
+                  return new Intl.NumberFormat('es-ES', {
+                    notation: "compact", maximumFractionDigits: 1 
+                  }).format(value) + " €"; 
+                }
+              } 
+            } 
+          } 
         },
-        options:{
-            maintainAspectRatio:false,
-            animation:{duration:1200,easing:'easeOutQuart'},
-            interaction:{mode:'index',intersect:false,axis:'x'},
-            hover:{mode:'index',intersect:false},
-            plugins:{legend:{display:false},tooltip:{enabled:false,external:externalTooltipHandler}},
-            scales:{
-                x:{grid:{color:"rgba(255,255,255,0.04)",drawBorder:false},ticks:{color:"rgba(255,255,255,0.5)",font:{size:10},maxTicksLimit: window.innerWidth<768?5:10}},
-                y:{grid:{color:"rgba(255,255,255,0.04)",drawBorder:false},ticks:{color:"rgba(255,255,255,0.5)",font:{size:11},callback:function(val){return new Intl.NumberFormat('es-ES',{notation:"compact",maximumFractionDigits:1}).format(val)+" €";}}}
-            }
-        },
-        plugins:[verticalLinePlugin,glowPlugin]
-    });
-
-    gtag('event','result_shown',{event_category:'engagement',event_label:'Resultado mostrado'});
-
-    document.getElementById("results").classList.add("visible");
-    document.querySelector(".pro-block").classList.add("visible");
-
-    const explanation = `
-        Si inviertes <strong>${monthly.toLocaleString("es-ES",{style:"currency",currency:"EUR"})}</strong> al mes durante <strong>${years} años</strong>, podrías acumular aproximadamente <span>${finalCapital.toLocaleString("es-ES",{style:"currency",currency:"EUR"})}</span>.
-        Habrás aportado <strong>${totalInvested.toLocaleString("es-ES",{style:"currency",currency:"EUR"})}</strong>, pero <span>${interestEarned.toLocaleString("es-ES",{style:"currency",currency:"EUR"})}</span> vendrán del crecimiento de tu dinero con el tiempo.
-        Esto es el efecto del interés compuesto: tu dinero empieza a trabajar por ti.
-    `;
-
-    const lateScenario = finalCapital*0.7;
-    const comparison = `<br><br>Si retrasas esta inversión unos años, podrías terminar con alrededor de <span>${lateScenario.toLocaleString("es-ES",{style:"currency",currency:"EUR"})}</span>.<span>Empezar antes marca una gran diferencia.</span>`;
-
-    document.getElementById("resultExplanation").innerHTML = explanation + comparison;
-}
-</script>
-
-</body>
+        
+         plugins: [verticalLinePlugin, glowPlugin]
+       });
+       
+       gtag('event', 'result_shown', { 
+         event_category: 'engagement',
+         event_label: 'Resultado mostrado'
+       }); 
+       
+       document.getElementById("results").classList.add("visible");
+       document.querySelector(".pro-block").classList.add("visible");
+       
+        const explanation = Si inviertes <strong>${monthly.toLocaleString("es-ES", {style: "currency", currency: "EUR"})} al mes</strong>durante <strong>${years} años</strong>, podrías acumular aproximadamente <span>${finalCapital.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span>. Habrás aportado <strong>${totalInvested.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</strong>, pero <span>${interestEarned.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}</span> vendrán del crecimiento de tu dinero con el tiempo. Esto es el efecto del interés compuesto: tu dinero empieza a trabajar por ti. ; 
+       const lateScenario = finalCapital * 0.7;
+       const comparison = 
+         <br><br> 
+         Si retrasas esta inversión unos años, podrías terminar con alrededor de 
+         <span>${lateScenario.toLocaleString("es-ES", {style:"currency", currency:"EUR"})}</span>.
+         <span>Empezar antes marca una gran diferencia.</span>
+         ; 
+       
+       document.getElementById("resultExplanation").innerHTML = explanation + comparison;
+      }
+      
+      function formatNumber(value) {
+        return value.replace(/\D/g, "") 
+          .replace(/\B(?=(\d{3})+(?!\d))/g, "."); 
+      } 
+      
+      const monthlyInput = document.getElementById("monthly");
+      
+      monthlyInput.addEventListener("input", function() {
+        this.value = formatNumber(this.value);
+        this.classList.add("changed"); setTimeout(() => {
+          this.classList.remove("changed"); 
+        }, 300); 
+      }); 
+    </script> 
+  </body> 
 </html>

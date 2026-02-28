@@ -195,6 +195,18 @@ body {
     opacity: 0.8;
 }
 
+.best-choice {
+    background: rgba(212,175,55,0.15);
+    border: 1px solid rgba(212,175,55,0.5);
+    color: rgba(212,175,55,1);
+    font-size: 11px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    display: inline-block;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+}
+
 </style>
 </head>
 
@@ -489,7 +501,18 @@ function calculateProSimulation() {
 
     document.getElementById("proComparisonBlock").style.display = "block";
 
+let bestScenario = "base";
+
+if (finalConservative > finalBase && finalConservative > finalAggressive) {
+    bestScenario = "conservative";
+} else if (finalAggressive > finalBase && finalAggressive > finalConservative) {
+    bestScenario = "aggressive";
+}
+    
 document.getElementById("cardConservative").innerHTML = `
+<div class="best-choice">Escenario óptimo</div>
+${bestScenario === "conservative" ? '<div class="best-choice">Escenario óptimo</div>' : ''}
+
 <h4>Conservador (${(conservativeRate*100).toFixed(1)}%)</h4>
 <p><strong>Capital final:</strong> ${finalConservative.toLocaleString("es-ES",{minimumFractionDigits:2})} €</p>
 <p><strong>Intereses:</strong> ${interestConservative.toLocaleString("es-ES",{minimumFractionDigits:2})} €</p>
@@ -498,6 +521,9 @@ document.getElementById("cardConservative").innerHTML = `
 `;
 
 document.getElementById("cardBase").innerHTML = `
+<div class="best-choice">Escenario óptimo</div>
+${bestScenario === "conservative" ? '<div class="best-choice">Escenario óptimo</div>' : ''}
+
 <h4>Base (${(baseRate*100).toFixed(1)}%)</h4>
 <p><strong>Capital final:</strong> ${finalBase.toLocaleString("es-ES",{minimumFractionDigits:2})} €</p>
 <p><strong>Intereses:</strong> ${interestBase.toLocaleString("es-ES",{minimumFractionDigits:2})} €</p>
@@ -505,6 +531,9 @@ document.getElementById("cardBase").innerHTML = `
 `;
 
 document.getElementById("cardAggressive").innerHTML = `
+<div class="best-choice">Escenario óptimo</div>
+${bestScenario === "conservative" ? '<div class="best-choice">Escenario óptimo</div>' : ''}
+
 <h4>Agresivo (${(aggressiveRate*100).toFixed(1)}%)</h4>
 <p><strong>Capital final:</strong> ${finalAggressive.toLocaleString("es-ES",{minimumFractionDigits:2})} €</p>
 <p><strong>Intereses:</strong> ${interestAggressive.toLocaleString("es-ES",{minimumFractionDigits:2})} €</p>

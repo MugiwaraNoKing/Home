@@ -21,6 +21,7 @@ body {
 .pro-hero {
     text-align: center;
     margin-bottom: 80px;
+    <img src="/assets/logo-fynantium.png" alt="Fynantium" style="height:40px; margin-bottom:20px;">
 }
 
 .pro-badge {
@@ -218,11 +219,10 @@ body {
 
     <section class="pro-hero">
         <span class="pro-badge">FYNANTIUM PRO</span>
-        <h1>Laboratorio de Simulación Financiera</h1>
-        <p>
-            Configura escenarios personalizados, ajusta inflación y analiza
-            el crecimiento real de tu capital con precisión profesional.
-        </p>
+        <h1>Descubre el potencial real de tu inversión</h1>
+            <p>
+            Simula distintos escenarios, ajusta inflación y entiende cuánto dinero podrías estar dejando sobre la mesa.
+            </p>
     </section>
 
 
@@ -505,10 +505,18 @@ function calculateProSimulation() {
 
 let bestScenario = "base";
 
+if (finalConservative > finalBase && finalConservative > finalAggressive) {
+    bestScenario = "conservative";
+} else if (finalAggressive > finalBase && finalAggressive > finalConservative) {
+    bestScenario = "aggressive";
+}
+
+// limpiar highlights
 document.getElementById("cardConservative").classList.remove("highlight");
 document.getElementById("cardBase").classList.remove("highlight");
 document.getElementById("cardAggressive").classList.remove("highlight");
 
+// aplicar highlight correcto
 if (bestScenario === "conservative") {
     document.getElementById("cardConservative").classList.add("highlight");
 } else if (bestScenario === "base") {
@@ -516,14 +524,8 @@ if (bestScenario === "conservative") {
 } else if (bestScenario === "aggressive") {
     document.getElementById("cardAggressive").classList.add("highlight");
 }
-if (finalConservative > finalBase && finalConservative > finalAggressive) {
-    bestScenario = "conservative";
-} else if (finalAggressive > finalBase && finalAggressive > finalConservative) {
-    bestScenario = "aggressive";
-}
     
 document.getElementById("cardConservative").innerHTML = `
-<div class="best-choice">Escenario óptimo</div>
 ${bestScenario === "conservative" ? '<div class="best-choice">Escenario óptimo</div>' : ''}
 
 <h4>Conservador (${(conservativeRate*100).toFixed(1)}%)</h4>
@@ -534,8 +536,7 @@ ${bestScenario === "conservative" ? '<div class="best-choice">Escenario óptimo<
 `;
 
 document.getElementById("cardBase").innerHTML = `
-<div class="best-choice">Escenario óptimo</div>
-${bestScenario === "conservative" ? '<div class="best-choice">Escenario óptimo</div>' : ''}
+${bestScenario === "base" ? '<div class="best-choice">Escenario óptimo</div>' : ''}
 
 <h4>Base (${(baseRate*100).toFixed(1)}%)</h4>
 <p><strong>Capital final:</strong> ${finalBase.toLocaleString("es-ES",{minimumFractionDigits:2})} €</p>
@@ -544,8 +545,7 @@ ${bestScenario === "conservative" ? '<div class="best-choice">Escenario óptimo<
 `;
 
 document.getElementById("cardAggressive").innerHTML = `
-<div class="best-choice">Escenario óptimo</div>
-${bestScenario === "conservative" ? '<div class="best-choice">Escenario óptimo</div>' : ''}
+${bestScenario === "aggressive" ? '<div class="best-choice">Escenario óptimo</div>' : ''}
 
 <h4>Agresivo (${(aggressiveRate*100).toFixed(1)}%)</h4>
 <p><strong>Capital final:</strong> ${finalAggressive.toLocaleString("es-ES",{minimumFractionDigits:2})} €</p>

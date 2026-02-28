@@ -185,7 +185,9 @@ body {
 }
 
 .comparison-card.highlight {
-    border: 1px solid rgba(212,175,55,0.5);
+    border: 1px solid rgba(212,175,55,0.6);
+    box-shadow: 0 0 20px rgba(212,175,55,0.15);
+    transform: translateY(-4px);
 }
 
 .pro-insight {
@@ -303,7 +305,7 @@ body {
             <div class="comparison-grid">
 
                 <div class="comparison-card" id="cardConservative"></div>
-                <div class="comparison-card highlight" id="cardBase"></div>
+                <div class="comparison-card" id="cardBase"></div>
                 <div class="comparison-card" id="cardAggressive"></div>
 
             </div>
@@ -503,6 +505,17 @@ function calculateProSimulation() {
 
 let bestScenario = "base";
 
+document.getElementById("cardConservative").classList.remove("highlight");
+document.getElementById("cardBase").classList.remove("highlight");
+document.getElementById("cardAggressive").classList.remove("highlight");
+
+if (bestScenario === "conservative") {
+    document.getElementById("cardConservative").classList.add("highlight");
+} else if (bestScenario === "base") {
+    document.getElementById("cardBase").classList.add("highlight");
+} else if (bestScenario === "aggressive") {
+    document.getElementById("cardAggressive").classList.add("highlight");
+}
 if (finalConservative > finalBase && finalConservative > finalAggressive) {
     bestScenario = "conservative";
 } else if (finalAggressive > finalBase && finalAggressive > finalConservative) {
